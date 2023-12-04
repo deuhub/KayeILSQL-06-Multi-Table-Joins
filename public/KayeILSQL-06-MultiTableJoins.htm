@@ -1,0 +1,3270 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>KayeILSQL-06-Multi-Table-Joins</title>
+
+    <meta charset="UTF-8">
+    <meta name="description" content="KayeILSQL-06-Multi-Table Joins">
+    <meta name="keywords" content="Kaye is Learning SQL, #kayeIsLearningSQL, 
+    Multi-Table Joins, #joins, #selfjoin, #self_join,
+    #outer_join, #outerjoin, #left_outer_join #leftouterjoin,
+    #rightouterjoin, #fullouterjoin, 
+    #full_join, #fulljoin, #leftjoin, #left_join,
+    #rightjoin, #right_join, #cartesian_product, #cartesianproduct
+ ">
+    <meta name="author" content="Dicle Ertan Ülger">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        h1 {
+            color: rgb(8, 51, 143);
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            page-break-before: always;
+        }
+
+        h2 {
+            color: rgb(125, 186, 0);
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            page-break-before: always;
+        }
+
+        h3 {
+            color: rgb(0, 184, 224);
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+        }
+
+        h4 {
+            color: rgb(222, 59, 33);
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-size: large;
+        }
+
+
+        h5 {
+            color: rgb(0, 196, 181);
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-size: large;
+        }
+
+        h6 {
+            color: rgb(144, 36, 143);
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-size: large;
+        }
+
+        p {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        .note-emoji-300 {
+            font-size: 300%;
+
+        }
+
+
+        .note-bold {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-weight: bold;
+        }
+
+
+        .note-bold-italic {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-weight: bold;
+            font-style: italic;
+        }
+
+        .note-bold-navy {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-weight: bold;
+            color: rgb(8, 51, 143);
+        }
+
+        .note-bold-navy-italic {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-weight: bold;
+            color: rgb(8, 51, 143);
+            font-style: italic;
+        }
+
+        .note-bold-navy-larger {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-weight: bold;
+            color: rgb(8, 51, 143);
+            font-size: larger;
+        }
+
+        .note-bold-larger {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-weight: bold;
+            font-size: larger;
+        }
+
+        .note-bold-red {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            color: rgb(222, 59, 33);
+            font-weight: bold;
+        }
+
+        .note-bold-red-larger {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            color: rgb(222, 59, 33);
+            font-weight: bold;
+            font-size: larger;
+        }
+
+        .note-bold-red-italic {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            color: rgb(222, 59, 33);
+            font-weight: bold;
+            font-style: italic;
+        }
+
+        .note-10 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            color: rgb(222, 59, 33);
+            background-color: rgb(247, 181, 18);
+            padding: 30px;
+            font-weight: bold;
+        }
+
+        .note-20 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            color: rgb(222, 59, 33);
+            font-weight: bold;
+        }
+
+        .note-25 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            color: rgb(222, 59, 33);
+            font-weight: bold;
+            font-style: italic;
+        }
+
+        .note-30 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgb(247, 181, 18);
+            padding: 30px;
+            font-weight: bold;
+        }
+
+        .note-40 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgb(0, 184, 224);
+            padding: 30px;
+            font-weight: bold;
+        }
+
+        .note-50 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(0, 184, 224, 25%);
+            padding: 30px;
+            font-weight: bold;
+        }
+
+        .note-55 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(0, 184, 224, 25%);
+            padding: 30px;
+            font-weight: bold;
+            font-size: larger;
+        }
+
+        .note-60 {
+            background-color: rgb(247, 181, 18);
+            color: rgb(8, 51, 143);
+            font-size: larger;
+            font-weight: bold;
+            padding: 30px;
+        }
+
+        .note-70 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(0, 184, 224, 25%);
+            padding: 20px;
+        }
+
+        .note-75 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(0, 184, 224, 25%);
+            color: rgb(222, 59, 33);
+            padding: 30px;
+            font-weight: bold;
+            font-size: larger;
+        }
+
+        .note-80 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgb(247, 181, 18);
+            color: rgb(222, 59, 33);
+            padding: 30px;
+            font-weight: bold;
+        }
+
+
+        .note-85 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgb(247, 181, 18);
+            color: rgb(222, 59, 33);
+            padding: 30px;
+            font-weight: bold;
+            font-size: larger;
+        }
+
+        .note-jci-green {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgb(125, 186, 0);
+            padding: 30px;
+        }
+
+        .note-jci-green-3 {
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            font-size: larger;
+            font-weight: bold;
+            background-color: rgb(125, 186, 0);
+            padding: 30px;
+        }
+
+
+        .note-90 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(125, 186, 0, 25%);
+            padding: 30px;
+
+        }
+
+        .note-cyan-a30 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(0, 184, 224, 30%);
+            padding: 30px;
+        }
+
+        .note-95 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(0, 184, 224, 10%);
+            padding: 30px;
+        }
+
+        .note-95-a15 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(0, 184, 224, 15%);
+            padding: 30px;
+        }
+
+        .note-95-a20 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(0, 184, 224, 20%);
+            padding: 30px;
+        }
+
+        .note-95-a30 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(0, 184, 224, 30%);
+            padding: 30px;
+        }
+
+        .note-95-a30-larger {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(0, 184, 224, 30%);
+            padding: 30px;
+            font-size: larger;
+        }
+
+        .note-jci-cyan {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgb(0, 184, 224);
+            padding: 30px;
+        }
+
+        .note-jci-cyan-10 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(0, 184, 224, 10%);
+            padding: 30px;
+        }
+
+        .note-jci-cyan-larger {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgb(0, 184, 224);
+            padding: 30px;
+            font-size: larger;
+        }
+
+        .note-96 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(0, 184, 224, 10%);
+            padding: 30px;
+            font-size: larger;
+        }
+
+        .note-97 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(125, 186, 0, 10%);
+            padding: 30px;
+
+        }
+
+        .note-97-a15 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(125, 186, 0, 15%);
+            padding: 30px;
+
+        }
+
+        .note-97-a30 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(125, 186, 0, 30%);
+            padding: 30px;
+        }
+
+        .note-98 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(125, 186, 0, 10%);
+            padding: 30px;
+            font-size: larger;
+
+        }
+
+        .note-jcigreen-larger {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            color: rgb(125, 186, 0);
+            font-size: larger;
+            font-weight: bold;
+        }
+
+        .note-110 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            color: rgb(199, 15, 175);
+            font-weight: bold;
+        }
+
+        .note-115 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(199, 15, 175, 25%);
+            padding: 30px;
+            font-weight: bold;
+        }
+
+        .note-117 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(199, 15, 175, 10%);
+            padding: 30px;
+        }
+
+        .note-117-a05 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(199, 15, 175, 5%);
+            padding: 30px;
+        }
+
+
+        .note-117-a10 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(199, 15, 175, 10%);
+            padding: 30px;
+        }
+
+        .note-117-a15 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(199, 15, 175, 15%);
+            padding: 30px;
+        }
+
+        .note-117-a30 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(199, 15, 175, 30%);
+            padding: 30px;
+        }
+
+        .note-117-a50 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(199, 15, 175, 50%);
+            padding: 30px;
+        }
+
+        .note-117-a70 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(199, 15, 175, 70%);
+            padding: 30px;
+        }
+
+        .note-117-larger {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            color: rgb(199, 15, 175);
+            font-size: larger;
+            font-weight: bold;
+        }
+
+        .note-200 {
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .note-210 {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+        }
+
+
+
+        .note-300 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgb(102, 99, 102);
+            color: rgb(245, 245, 245);
+            padding: 30px;
+            font-weight: bold;
+        }
+
+
+        .note-charcoal-larger {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            color: rgb(102, 99, 102);
+            font-size: larger;
+            font-weight: bold;
+        }
+
+        .note-charcoal {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgb(102, 99, 102);
+            padding: 30px;
+        }
+
+        .note-charcoal-a70 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(102, 99, 102, 70%);
+            padding: 30px;
+        }
+
+        .note-charcoal-a50 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(102, 99, 102, 50%);
+            padding: 30px;
+        }
+
+        .note-charcoal-a30 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(102, 99, 102, 30%);
+            padding: 30px;
+        }
+
+        .note-charcoal-a30-large {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(102, 99, 102, 30%);
+            padding: 30px;
+            font-size: larger;
+            font-weight: bold;
+        }
+
+        .note-charcoal-a30-largexx {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(102, 99, 102, 30%);
+            padding: 30px;
+            font-size: xx-large;
+            font-weight: bold;
+        }
+
+        .note-solaryellow-a30 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(247, 181, 18, 30%);
+            padding: 30px;
+        }
+
+        .note-brightgreen-larger {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgb(196, 219, 13);
+            font-size: larger;
+            font-weight: bold;
+            padding: 30px;
+        }
+
+        .note-brightgreen {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgb(196, 219, 13);
+            padding: 30px;
+        }
+
+        .note-brightgreen-a70 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(196, 219, 13, 70%);
+            padding: 30px;
+        }
+
+        .note-brightgreen-a50 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(196, 219, 13, 50%);
+            padding: 30px;
+        }
+
+        .note-brightgreen-a30 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(196, 219, 13, 30%);
+            padding: 30px;
+        }
+
+        .note-brightgreen-a10 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(196, 219, 13, 10%);
+            padding: 30px;
+        }
+
+        .note-brightgreen-a05 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(196, 219, 13, 5%);
+            padding: 30px;
+        }
+
+        .note-oceangreen-larger {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(0, 196, 181);
+            font-size: larger;
+            font-weight: bold;
+            padding: 30px;
+        }
+
+        .note-oceangreen {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(0, 196, 181);
+            padding: 30px;
+        }
+
+        .note-oceangreen-a05 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(0, 196, 181, 5%);
+            padding: 30px;
+        }
+
+        .note-oceangreen-a10 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(0, 196, 181, 10%);
+            padding: 30px;
+        }
+
+        .note-oceangreen-a30 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(0, 196, 181, 30%);
+            padding: 30px;
+        }
+
+        .note-oceangreen-a50 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(0, 196, 181, 50%);
+            padding: 30px;
+        }
+
+        .note-oceangreen-a70 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(0, 196, 181, 70%);
+            padding: 30px;
+        }
+
+
+        .note-radient-red-larger {
+            background-color: rgb(168, 3, 79);
+            color: rgb(245, 245, 245);
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-size: larger;
+            font-weight: bold;
+            padding: 30px;
+        }
+
+        .note-radient-red {
+            background-color: rgb(168, 3, 79);
+            color: rgb(245, 245, 245);
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            padding: 30px;
+        }
+
+        .note-radient-red-a70 {
+            background-color: rgba(168, 3, 79, 70%);
+            color: rgb(245, 245, 245);
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            padding: 30px;
+        }
+
+        .note-radient-red-a50 {
+            background-color: rgba(168, 3, 79, 50%);
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            padding: 30px;
+        }
+
+        .note-radient-red-a30 {
+            background-color: rgba(168, 3, 79, 30%);
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            padding: 30px;
+        }
+
+        .note-radient-red-a10 {
+            background-color: rgba(168, 3, 79, 10%);
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            padding: 30px;
+        }
+
+        .note-radient-red-a05 {
+            background-color: rgba(168, 3, 79, 5%);
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            padding: 30px;
+        }
+
+        ul {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            line-height: 30px;
+        }
+
+        ol {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            line-height: 30px;
+        }
+
+        dl {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            line-height: 30px;
+        }
+
+        dt {
+            font-size: larger;
+        }
+
+        #t20 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+
+
+        }
+
+        table {
+            width: 100%;
+            text-align: left;
+            font-size: small;
+        }
+
+        table,
+        th,
+        td {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 10px;
+        }
+
+        div {
+            overflow-x: auto;
+
+        }
+
+        figcaption {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+        }
+
+        p.lh2 {
+            line-height: 2;
+        }
+
+        ul.lh3 {
+            line-height: 3;
+        }
+
+
+        #table_and table,
+        th,
+        td {
+            padding: 30px;
+            text-align: center;
+            border-collapse: collapse;
+            font-size: larger;
+        }
+    </style>
+
+</head>
+
+<body>
+
+
+    <h1>KayeILSQL-06-Multi-Table Joins</h1>
+    <p></p>
+    <!--    <img src="deu.png" style="max-width:100% ;" height="auto" alt="just me"> -->
+
+    <p></p>
+    <div class="note-55">
+        <p style="font-size: larger;">Contents</p>
+    </div>
+
+
+    <!-- -->
+    <div class="note-95">
+        <p style="font-size: larger; font-weight: bold;">
+            <a href="#based_on"> Based On </a>
+        </p>
+
+        <ul>
+            <li><a href="#based_on_experience">Based On &mdash; Experience</a> </li>
+            <li><a href="#based_on_data_model">Based On &mdash; European Parliament as Data Model</a> </li>
+            <li><a href="#based_on_references">Based On &mdash; Oracle Database as RDBMS</a> </li>
+        </ul>
+
+        <!-- -->
+        <p style="font-size: larger; font-weight: bold;">
+            <a href="#about">About Multi-Table Joins</a>
+        </p>
+        <ul>
+            <li><a href="#about_ex">Example</a></li>
+            <li><a href="#about_from">FROM Clause</a></li>
+            <li><a href="#about_alias">TABLE Alias</a></li>
+            <li><a href="#about_on">ON Clause</a></li>
+            <li><a href="#about_select_cols">Columns in SELECT</a></li>
+        </ul>
+
+        <p style="font-size: larger; font-weight: bold;"><a href="#inner">INNER JOIN / SIMPLE JOIN</a></p>
+        <ul>
+            <li><a href="#inner_def">Definition of INNER JOIN</a></li>
+            <li><a href="#inner_samp">Sample SELECT for INNER JOIN</a></li>
+            <li><a href="#inner_return">Which Rows does the INNER JOIN RETURN?</a></li>
+            <li><a href="#inner_not_return">Which Rows does the INNER JOIN NOT Return?</a></li>
+        </ul>
+
+        <p style="font-size: larger; font-weight: bold;">
+            <a href="#outer">OUTER JOIN</a>
+        </p>
+        <ul>
+            <li><a href="#outer_case_01">NEED FOR OUTER JOIN - CASE 1</a></li>
+            <li><a href="#outer_case_02">NEED FOR OUTER JOIN - CASE 2</a></li>
+            <li><a href="#def_outer">Definition &mdash; OUTER JOIN</a></li>
+            <li><a href="#left">LEFT OUTER JOIN</a></li>
+            <li><a href="#right">RIGHT OUTER JOIN</a></li>
+            <li><a href="#full">FULL OUTER JOIN</a></li>
+        </ul>
+        <p style="font-size: larger; font-weight: bold;"><a href="#more_than_two">JOINING MORE THAN TWO TABLES</a></p>
+        <ul>
+            <li><a href="#more_than_two_comms">COMMITTEES Table</a></li>
+            <li><a href="#more_than_two_fk_table">MEP_COMM_DELG_ROLES Table</a></li>
+            <li><a href="#more_than_two_report">Report for the Conference of the Presidents</a></li>
+            <li><a href="#more_than_two_n_1">TO JOIN N TABLES WE NEED A MINIMUM OF N-1 JOINS</a></li>
+        </ul>
+
+
+        <p style="font-size: larger; font-weight: bold;"><a href="#self">SELF JOIN</a></p>
+        <ul>
+            <li><a href="#self_join_report">We Want to Create this Self-Join Report</a></li>
+            <li><a href="#self_join_report_output">Self-Join Report Output</a></li>
+            <li><a href="#self_meps">Structure of table MEPS</a></li>
+            <li><a href="#self_simple">Simple Query on table MEPS</a></li>
+            <li><a href="#self_manual">Create the Report Manually</a></li>
+            <li><a href="#self_join_method">The SELF-JOIN Method</a></li>
+            <li><a href="#self_one_join">SELECT Statement for the SELF-JOIN Report</a></li>
+            <li><a href="#self_two_joins">An Example with Two Self-Referencing Foreign Keys </a></li>
+        </ul>
+        <p style="font-size: larger; font-weight: bold;"><a href="#cartes">CARTESIAN PRODUCT</a></p>
+        <ul>
+            <li><a href="#cartes_def">Definition of Cartesian Product</a></li>
+            <li><a href="#cartes_use">Uses of Cartesian Product</a></li>
+            <li><a href="#cartes_ex">Example on Cartesian Product</a></li>
+            <li><a href="#cartes_cross">The CROSS JOIN Clause</a></li>
+        </ul>
+        <!-- -->
+        <p style="font-size: larger; font-weight: bold;">
+            <a href="#references"> References </a>
+        </p>
+    </div>
+    <p></p>
+
+    <h2 id="based_on">Based On</h2>
+    <ul>
+        <li><a href="#based_on_experience">Based On &mdash; Experience</a> </li>
+        <li><a href="#based_on_data_model">Based On &mdash; European Parliament as Data Model</a> </li>
+        <li><a href="#based_on_references">Based On &mdash; Oracle Database as RDBMS</a> </li>
+    </ul>
+    <h3 id="based_on_experience">Based On &mdash; Experience</h3>
+    <div class="note-charcoal-a30-large">
+
+
+        <p>The contents of this work are based on;
+        </p>
+    </div>
+    <p>
+
+    </p>
+
+
+    <ul class="note-117">
+        <li>the SQL Courses I delivered to Oracle Customers in
+            Oracle Turkey, during 1995-2002,
+        </li>
+        <li>the SQL Courses I delivered to the students of
+            the evening programs
+            in Bahçeşehir University,
+            Istanbul, during 2007-2009,</li>
+        <li>the in-house SQL Courses I delivered to my colleagues
+            in Johnson Controls, Istanbul Technology Center,
+            during 2009-2012,</li>
+        <li>the in-house SQL Courses I delivered to my colleagues
+            in Toyzz Shop HQ, Şekerpınar Kocaeli, during 2014-2021,
+        </li>
+        <li>most of my career in IT where I used hands-on SQL as
+            a base of the development tools starting from 1987 &mdash;
+            30 years of lapse time approximately.</li>
+    </ul>
+
+
+
+    <h3 id="based_on_data_model">Based On &mdash; European Parliament as Data Model</h3>
+
+    <p> This text on SQL is based on the
+        <span class="note-bold-navy">EP-European Parliament </span>
+        as Data Model.
+    </p>
+
+
+
+
+
+
+    <span class="note-bold"> </span>
+    <span class="note-bold-navy"> </span>
+    <span class="note-bold-italic"> </span>
+    <span class="note-bold-navy-italic"> </span>
+
+    <p></p>
+    <p></p>
+    <p></p>
+
+    <div class="note-95">
+        <span class="note-bold"> </span>
+        <span class="note-bold-navy"> </span>
+        <span class="note-bold-italic"> </span>
+        <span class="note-bold-navy-italic"> </span>
+        <p>The
+            <span class="note-bold-navy">European Parliament (EP)</span>
+            is the parliamentary institution of the
+            <span class="note-bold">European Union (EU)</span>.
+        </p>
+        <p>
+            The European Parliament is elected by the citizens of the European Union to represent their interests.</p>
+        <p> Its origins go back to the 1950s and the founding Treaties.
+            Since 1979 its members have been directly elected by the citizens of the EU.</p>
+
+    </div>
+    <p></p>
+    <div class="note-97">
+        <p>Elections are held every five years, and every EU citizen is entitled to vote, and to stand as a candidate,
+            wherever they live in the EU.
+            Parliament thus expresses the democratic will of the
+            European Union's nearly 500 million citizens and
+            it represents their interests in discussions with the other EU institutions. </p>
+
+    </div>
+
+    <p></p>
+
+    <p></p>
+
+    <div class="note-jci-green-3">
+        <p>Please Note:</p>
+        <p>
+        <ul style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            font-size: larger;
+            font-weight: bold;
+            ">
+            <li> The European Parliament model and data used in this SQL text,
+                are based on the elections which were held in June 2004.</li>
+            <li>The European Parliament of 2004 elections had 785 members from all 27 EU countries.</li>
+        </ul>
+        </p>
+    </div>
+    <p></p>
+
+    <p></p>
+    <div class="note-95">
+        <p>The sources for the data, which are all freely obtainable from the European Union website,
+            and from several leaflets of the EU institutions,
+            are listed in the
+            <a href="#references"> References</a>
+            section.
+        </p>
+
+        <span class="note-bold"> </span>
+        <span class="note-bold-navy"> </span>
+        <span class="note-bold-italic"> </span>
+        <span class="note-bold-navy-italic"> </span>
+        <p>These sources are used to create
+            <span class="note-bold-navy-italic">the fictitious Business Narrative</span>
+
+            of the
+            <span class="note-bold">"Data Modelling and Normalization"</span>
+            Chapter.
+        </p>
+        <p>We called this
+            <span class="note-bold-navy">Business Narrative</span>;
+            <span class="note-bold">"the Story of the European Union"</span>
+            which explains about the EU and EP,
+            for purposes of Data Modeling.
+        </p>
+
+  <!--     <p>You can access our
+            <span class="note-bold-navy">Business Narrative</span>,
+            <span class="note-bold">the Story of the European Union</span>
+            <a href="kayeILSQL-StoryEuropeanUnion.htm" target="_blank">here</a>.
+        </p>
+
+-->  
+<p>
+    <span class="note-bold">The Story of the European Union</span> is the last Chapter
+of <b> Kaye is Learning SQL</b>.
+</p>
+
+
+
+    </div>
+
+    <p></p>
+    <h3 id="based_on_references">Based On &mdash; Oracle Database as RDBMS</h3>
+
+    <p> This text on SQL is based on the
+        <span class="note-bold-navy">Oracle Database</span>
+        as RDBMS &mdash; Relational Database Management System.
+    </p>
+
+    <p>Although the <b>SQL Statements</b> used in this text, apply specifically
+        to the Oracle Database implementation of SQL,
+        they are generally compatible with
+        many other RDBMS SQL implementations.</p>
+
+    <p> The knowledge in the following sections are based
+        on my personal work experience, as well as on
+        several Oracle Documentation,
+        which are freely downloadable from Oracle websites.
+    </p>
+    <p>You can find a list of these documents in the
+        <a href="#references"> References</a>.
+    </p>
+    <p>The name of the documents may change in time.</p>
+    <p>
+        <span class="note-bold-navy">
+            You can refer to the Oracle Documentation if you need more detailed
+            information on any of the topics in this text.</span>
+    </p>
+    <p>Any errors present, are mine.</p>
+    <div class="note-97">
+
+        <img src="../images/c6/garden-9983.jpg" style="max-width:100% ;" height="auto" alt="Breath of Fresh Air">
+
+        <p> </p>
+
+    </div>
+    <p></p>
+
+    <p></p>
+    <!--  -->
+    <!--  -->
+    <h2 id="about">About Multi-Table Joins</h2>
+    <p></p>
+    <ul>
+        <li><a href="#about_ex">Example</a></li>
+        <li><a href="#about_from">FROM Clause</a></li>
+        <li><a href="#about_alias">TABLE Alias</a></li>
+        <li><a href="#about_on">ON Clause</a></li>
+        <li><a href="#about_select_cols">Columns in SELECT</a></li>
+    </ul>
+    <div class="note-95">
+        <p>So far we have selected data from only one table.</p>
+        <p>However, sometimes we might need to access information
+            that has to be retrieved from more than one table. </p>
+        <p>For example, we might need to display
+            <b>Members of the Parliament</b> who belong to
+            a certain <b>Political Group</b>.
+            We would like to see some details of the <b>Political Group</b>
+            along with some details of the
+            <b>Members of the Parliament</b> in our report.
+        </p>
+
+    </div>
+    <p></p>
+    <p></p>
+    <div class="note-97">
+        <p>Below, we see the structure of the <b>MEPS</b> table
+            which holds details of the <b>Members of the Parliament</b>, and the
+            <b>POLITICAL_GROUPS</b> table which holds
+            details of the <b>Political Groups</b>.
+        </p>
+        <p></p>
+    </div>
+    <p></p>
+
+    <div class="note-97">
+        <p></p>
+        <p><b>MEPS Table</b></p>
+        <p><img src="../images/c6/meps_01.jpg" alt="MEPS Table Structure" style="max-width: 100%; height: auto;"></p>
+    </div>
+    <p></p>
+
+    <div class="note-97">
+        <p></p>
+        <p><b>POLITICAL_GROUPS Table</b></p>
+        <p><img src="../images/c6/political_groups_01.jpg" alt="POLITICAL_GROUPS Table Structure"
+                style="max-width: 100%; height: auto;"></p>
+    </div>
+    <p></p>
+    <p></p>
+    <div class="note-97">
+        <b></b>
+        <p>As we already know, these two tables have a
+            <b>Foreign Key Relationship</b>.
+        </p>
+        <p>Below is the <b>Creation Script for Table MEPS</b>,
+            and the <b>Foreign Key Relationship</b> between
+            <b>MEPS</b> and <b>POLITICAL_GROUPS</b> is:
+        <pre>
+<span class="note-bold-red">,pg_id number(10)
+constraint pg_id_fk 
+references POLITICAL_GROUPS(pg_id)</span>
+ </pre>
+        </p>
+        <p></p>
+    </div>
+    <p></p>
+    <p></p>
+    <b></b>
+
+    <div class="note-charcoal-a30-large">
+        <p><b>Creation Script for Table MEPS</b></p>
+        <pre style="font-size:larger ;">
+create table MEPS
+(mep_id			number(10)
+    constraint mep_id_pk primary key
+,first_name		varchar2(120)
+,last_name		varchar2(120)
+    constraint last_name_nn not null
+,salary			number(9,2)
+,bonus_pct		number(5,4)
+,email			varchar2(240)
+    constraint email_nn not null
+    constraint email_unique unique
+,tel			varchar2(20)
+,internet		varchar2(120)
+,start_date		date
+,country_id		varchar2(4)
+    constraint country_id_fk
+    references COUNTRIES(country_id)
+<span class="note-bold-red">,pg_id number(10)
+    constraint pg_id_fk 
+    references POLITICAL_GROUPS(pg_id)</span>
+,pg_chair_or_cochair1	number(10)
+    constraint pg_chair_cochair1_fk
+    references MEPS(mep_id)
+,pg_cochair2		number(10)
+    constraint pg_cochair2_fk
+    references MEPS(mep_id)
+);
+</pre>
+    </div>
+    <p></p>
+    <div>
+        <p>Here is the <b>Constraints Tab</b> of
+            <b>MEPS</b> where we can see the <b>Constraints </b>
+            created by the script above.
+        </p>
+        <p><img src="../images/c6/meps_02.jpg" alt="MEPS Table Constraints" style="max-width: 100%; height: auto;"></p>
+
+    </div>
+    <b></b>
+    <p></p>
+    <div class="note-117">
+
+        <p>The <b>FOREIGN KEY Relationship (FOREIGN KEY Constraint) PG_ID_FK</b>
+            requires that;</p>
+        <ul>
+            <li>the values of the PG_ID column of the MEPS table
+                MUST BE EQUAL TO one of the values of the
+                PG_ID column of the POLITICAL_GROUPS table,
+                or be NULL. </li>
+            <li>The PG_ID column in the MEPS table CANNOT hold a value which is
+                NOT NULL and NOT IN the PG_ID column of POLITICAL_GROUPS table. </li>
+        </ul>
+        <p></p>
+    </div>
+    <p></p>
+
+    <div class="note-117">
+        <p>We use Foreign Key Relationship to JOIN Tables
+            and
+            retrieve the Rows of our Choice.
+        </p>
+        <p></p>
+    </div>
+    <p></p>
+
+    <h3 id="about_ex">Example</h3>
+    <div class="note-95">
+        <p>Display <b>LAST NAME</b> and <b>FIRST NAME</b>
+            of the <b>Members of the Parliaments</b>,
+            as well as their <b>POLITICAL GROUP CODE</b> and
+            <b>POLITICAL GROUP NAME</b>.
+        </p>
+    </div>
+    <p></p>
+    <p></p>
+    <div class="note-charcoal-a30-large">
+        <pre>
+select	m.last_name
+,	m.first_name  
+,	p.pg_code
+,	p.pg_name
+from	meps m
+JOIN	political_groups p
+ON	(m.pg_id=p.pg_id)
+order by p.pg_code
+, 	m.last_name
+, 	m.first_name;
+</pre>
+        <p></p>
+
+
+    </div>
+    <p></p>
+    <div class="note-97">
+        <p></p>
+        <p>The Result Set is displayed below.</p>
+        <p>Not all rows are displayed.</p>
+        <p><img src="../images/c6/ex_01.jpg" alt="Example on Multi-Table JOIN" style="max-width: 100%; height: auto;"></p>
+
+    </div>
+    <p></p>
+    <p></p>
+
+    <h3 id="about_from">FROM Clause</h3>
+    <p></p>
+    <div class="note-95">
+        <p></p>
+        <p class="note-radient-red-larger">
+            from meps m
+            JOIN political_groups p
+        </p>
+        <p>To join the two tables, we specified their names in the
+            <b>FROM Clause</b>.
+        </p>
+        <p>We used the <b>JOIN Keyword</b>. </p>
+        <p>We used the alias <b>m</b> for table <b>MEPS</b>. </p>
+        <p>We used the alias <b>p</b> for table <b>POLITICAL_GROUPS</b>. </p>
+    </div>
+    <p></p>
+
+    <h3 id="about_alias">TABLE Alias</h3>
+    <div class="note-97">
+        <p></p>
+        <ul>
+            <li>a <b>Table ALIAS</b> is simply another name for the table </li>
+            <li>a <b>Table ALIAS</b> can be up to 30 characters </li>
+            <li>a <b>Table ALIAS</b> is valid only for the current
+                SQL Statement</li>
+        </ul>
+
+        <p></p>
+    </div>
+    <p></p>
+    <p></p>
+    <h3 id="about_on">ON Clause</h3>
+    <p></p>
+    <p></p>
+    <div class="note-117">
+        <p></p>
+        <p class="note-radient-red-larger">
+            ON (m.pg_id=p.pg_id)
+        </p>
+        <p>To join the two tables, we specified
+            a <b>JOIN Condition</b>
+            in the <b>ON Clause</b>.</p>
+        <p>The columns used in the <b>ON Clause</b> are the
+            <b>Foreign Key Relationship</b> columns of
+            table <b>MEPS</b> and table <b>POLITICAL_GROUPS</b>.
+        <p>These <b>Foreign Key Relationship</b> columns
+            both have the same name in the two tables: <b>pg_id</b> </p>
+        <p>To eliminate ambiguity;
+        <ul>
+            <li>we prefixed the column in table <b>MEPS</b>
+                with the table alias <b>"m"</b> </li>
+            <li>we prefixed the column in table <b>POLITICAL_GROUPS</b>
+                with the table alias <b>"p"</b> </li>
+        </ul>
+        </p>
+        <p></p>
+
+        <div class="note-117-a10">
+            <p>To join <b>two tables</b> together, we specified
+                <b>a single JOIN Condition / only one JOIN Condition</b>
+                in the <b>ON Clause</b>.
+            </p>
+            <p>If we were joining <b>three tables</b> together,
+                we would have specified
+                <b>at least two JOIN Conditions</b> in the
+                <b>ON Clause</b>.
+            </p>
+            <p>To JOIN <b>n tables</b> together, we need
+                <b>a minimum of n-1</b> JOIN Conditions.
+            </p>
+        </div>
+        <p></p>
+
+    </div>
+    <p></p>
+    <h3 id="about_select_cols">Columns in SELECT</h3>
+    <p></p>
+    <div class="note-95">
+        <p></p>
+        <p class="note-radient-red-larger">
+            select m.last_name
+            , m.first_name
+            , p.pg_code
+            , p.pg_name
+        </p>
+        <p>
+        <ul>
+            <li>we prefixed the columns in table <b>MEPS</b>
+                with the table alias <b>"m"</b> </li>
+            <li>we prefixed the columns in table <b>POLITICAL_GROUPS</b>
+                with the table alias <b>"p"</b> </li>
+            <li>An alias eliminates ambiguity if
+                the same column name is in more than one table
+            </li>
+            <li>An alias improves query processing;
+                Oracle knows exactly where to find the column
+            </li>
+            <li>an alias is valid only for the current
+                SQL Statement</li>
+        </ul>
+        </p>
+    </div>
+    <p></p>
+
+    <b></b>
+    <h2 id="inner">INNER JOIN / SIMPLE JOIN</h2>
+    <p></p>
+    <ul>
+        <li><a href="#inner_def">Definition of INNER JOIN</a></li>
+        <li><a href="#inner_samp">Sample SELECT for INNER JOIN</a></li>
+        <li><a href="#inner_return">Which Rows does the INNER JOIN RETURN?</a></li>
+        <li><a href="#inner_not_return">Which Rows does the INNER JOIN NOT Return?</a></li>
+    </ul>
+    <h3 id="inner_def">Definition of INNER JOIN</h3>
+    <b></b>
+    <div class="note-95">
+
+        <p>An <b>INNER JOIN</b> which is sometimes called a <b>SIMPLE JOIN</b> is
+            a join of two or more tables that
+            <b>RETURNS ONLY those rows that satisfy the JOIN Condition</b>.
+        </p>
+        <p>The previous example, where the SELECT Statement can also be seen below,
+            is an examle of <span class="note-bold-red">INNER JOIN / SIMPLE JOIN
+            </span>.
+        </p>
+    </div>
+    <p></p>
+    <h3 id="inner_samp">Sample SELECT for INNER JOIN</h3>
+    <p></p>
+    <div class="note-charcoal-a30-large">
+        <pre>
+select	m.last_name
+,	m.first_name  
+,	p.pg_code
+,	p.pg_name
+<span style="color: rgb(222, 59, 33);">from	meps m
+JOIN	political_groups p
+ON	(m.pg_id=p.pg_id)</span>
+order by p.pg_code
+, 	m.last_name
+, 	m.first_name;
+</pre>
+        <p></p>
+    </div>
+    <p></p>
+    <h3 id="inner_return">Which Rows does the INNER JOIN RETURN?</h3>
+    <div class="note-97">
+        <p>The Sample SELECT Statement above returns <b>Matching Rows</b> of tables
+            <b>MEPS</b> and <b>POLITICAL_GROUPS</b> based on
+            the <b>JOIN Condition</b>:
+        </p>
+        <p></p>
+    </div>
+    <p></p>
+    <div class="note-charcoal-a30-largexx">
+        <pre><span style="color: rgb(222, 59, 33); font-weight: bold;">
+FROM MEPS M 
+JOIN POLITICAL_GROUPS P
+ON (M.PG_ID = P.PG_ID)</span></pre>
+    </div>
+    <p></p>
+    <div class="note-97">
+        <p></p>
+        <p><span style="color: rgb(222, 59, 33); font-weight: bold;">ONLY</span>
+            <b>"Members of the Parliament</b> that
+            <span style="color: rgb(222, 59, 33); font-weight: bold;">BELONG TO</span>
+            a
+            <b>Political Group"</b> are
+            <span style="color: rgb(222, 59, 33); font-weight: bold;">RETURNED</span>.
+        </p>
+        <b></b>
+        <span style="color: rgb(222, 59, 33); font-weight: bold;"></span>
+        <p></p>
+    </div>
+    <p></p>
+    <div class="note-97">
+        <p><span style="color: rgb(222, 59, 33); font-weight: bold;">ONLY</span>
+            <b>"Political Groups that
+                <span style="color: rgb(222, 59, 33); font-weight: bold;">HAVE</span>
+                Members of the Parliament"</b>
+            are <span style="color: rgb(222, 59, 33); font-weight: bold;">RETURNED</span>.
+        </p>
+
+    </div>
+    <p></p>
+
+    <span style="color: rgb(222, 59, 33); font-weight: bold;"></span>
+    <p></p>
+    <h3 id="inner_not_return">Which Rows does the INNER JOIN NOT Return?</h3>
+    <p></p>
+    <div class="note-95">
+        <p></p>
+        <p>The Sample SELECT Statement above returns <b>Matching Rows</b> of tables
+            <b>MEPS</b> and <b>POLITICAL_GROUPS</b> based on
+            the <b>JOIN Condition</b>:
+        </p>
+        <p></p>
+    </div>
+
+    <p></p>
+    <div class="note-charcoal-a30-largexx">
+        <pre><span style="color: rgb(222, 59, 33);">
+FROM MEPS M 
+JOIN POLITICAL_GROUPS P
+ON (M.PG_ID = P.PG_ID)</span></pre>
+    </div>
+    <p></p>
+    <span style="color: rgb(222, 59, 33); font-weight: bold;"></span>
+    <p></p>
+    <div class="note-95">
+        <p></p>
+        <p>If a <b>Member of the Parliament</b> does
+            <span style="color: rgb(222, 59, 33); font-weight: bold;">
+                NOT belong to</span> a
+            <b>Political Group</b>,
+            in which case their
+            <span style="color: rgb(222, 59, 33); font-weight: bold;">
+                PG_ID is NULL</span>, then
+            they will <b>NOT be returned</b> by this query.
+        </p>
+    </div>
+    <p></p>
+
+    <div class="note-95">
+        <p></p>
+        <p>If there is a <b>NEW Political Group</b> in our Database,
+            which have
+            <span style="color: rgb(222, 59, 33); font-weight: bold;">
+                NO Members yet</span>,
+            this Political Group will <b>NOT be returned </b>
+            by the query above.
+        </p>
+
+    </div>
+    <p></p>
+
+
+    <p></p>
+
+    <h2 id="outer">OUTER JOIN</h2>
+    <p></p>
+    <ul>
+        <li><a href="#outer_case_01">NEED FOR OUTER JOIN - CASE 1</a></li>
+        <li><a href="#outer_case_02">NEED FOR OUTER JOIN - CASE 2</a></li>
+        <li><a href="#def_outer">Definition &mdash; OUTER JOIN</a></li>
+        <li><a href="#left">LEFT OUTER JOIN</a></li>
+        <li><a href="#right">RIGHT OUTER JOIN</a></li>
+        <li><a href="#full">FULL OUTER JOIN</a></li>
+    </ul>
+    <span style="color: rgb(222, 59, 33); font-weight: bold;"></span>
+    <h3 id="outer_case_01">NEED FOR OUTER JOIN - CASE 1</h3>
+    <div class="note-97">
+
+        <p>The query below lists the <b>Members of the Parliaments</b>
+            who <span style="color: rgb(222, 59, 33); font-weight: bold;">
+                do NOT belong to </span>
+            any <b>Political Groups</b>.
+        </p>
+        <p>Members who do not belong to any of the groups are known as
+            <b>"non-attached Members &mdash; non-inscrits (NI)"</b>.
+        </p>
+        <p>In our database,
+            we <span style="color: rgb(222, 59, 33); font-weight: bold;">
+                DO NOT ASSIGN </span> a <b>PG_ID</b> to them.
+        </p>
+        <p>They have a
+            <span style="color: rgb(222, 59, 33); font-weight: bold;">
+                NULL value</span>
+            in their <b>PG_ID</b> column.
+        </p>
+        <p>
+            We select the
+            <b>"non-attached Members &mdash; non-inscrits (NI)"</b>
+            in our database using the following SELECT Statement:
+        </p>
+    </div>
+    <p></p>
+    <div class="note-charcoal-a30-large">
+        <pre>
+SELECT MEP_ID, 
+LAST_NAME, 
+FIRST_NAME, 
+COUNTRY_ID, 
+PG_ID
+FROM MEPS
+WHERE PG_ID IS NULL
+ORDER BY MEP_ID
+</pre>
+    </div>
+    <p></p>
+    <p> <img src="../images/c6/non_attached_01.jpg" style="max-width:100% ;" height="auto"
+            alt="Non-attached Members of the Parliament"></p>
+    <p></p>
+    <div class="note-97">
+        <span style="color: rgb(222, 59, 33); font-weight: bold;"></span>
+        <p>Because their <b>PG_ID is NULL</b>,
+            the <b>"non-attached Members"</b> who do not
+            belong to a Political Group
+            will <b>NOT be returned</b> by the
+            <b>INNER JOIN Query</b> of the previous section.
+        </p>
+        <p>This was the <b>INNER JOIN Query</b>:</p>
+        <p></p>
+        <div class="note-charcoal-a30-large">
+            <pre>
+select	m.last_name
+,	m.first_name  
+,	p.pg_code
+,	p.pg_name
+<span style="color: rgb(222, 59, 33);">from	meps m
+JOIN	political_groups p
+ON	(m.pg_id=p.pg_id)</span>
+order by p.pg_code
+, 	m.last_name
+, 	m.first_name;
+</pre>
+            <p></p>
+        </div>
+        <p></p>
+        <p>Remember that a NULL is <b>NOT Equal</b> to any other value!</p>
+        <p>A NULL is <b>NOT Equal</b> to any other NULL either!!</p>
+        <p>Therefore, the <b>INNER JOIN Condition</b> above
+            <b>CANNOT</b> be satisfied.
+        </p>
+        <p>Hence, the
+            <b>"non-attached Members &mdash; non-inscrits (NI)"</b>
+            in our database, will <b>NOT be returned</b> by this SELECT Statement.
+        </p>
+    </div>
+
+    <p></p>
+
+    <div class="note-97">
+        <p><b>There is definitely a need for another type of JOIN</b>.</p>
+        <p>If we want to display the details of the
+            <b>"non-attached Members &mdash; non-inscrits (NI)"</b> along with
+            the other Members of the Parliament in the results of the query above,
+            we can then use <b>another type of JOIN</b> called
+            the <b>OUTER JOIN</b>.
+
+        </p>
+    </div>
+    <p></p>
+    <h3 id="outer_case_02">NEED FOR OUTER JOIN - CASE 2</h3>
+    <div class="note-117">
+
+        <p>The query below lists all the <b>Political Groups</b>
+            in our database, whether they have
+            any members or not.</p>
+        <p>In fact, we have two newly formed Political Groups,
+            that <b>HAVE NO MEMBERS YET</b>:
+        </p>
+        <ul>
+            <li> <b>PG_ID</b> : 200901, <b>PG_CODE</b> : NEW-EN,
+                <b>PG_NAME</b> : Group of the New Energy
+            </li>
+            <li><b>PG_ID</b> : 200902, <b>PG_CODE</b> : IE-IT,
+                <b>PG_NAME</b> : Group of the Innovation Economy and Information Technology
+            </li>
+        </ul>
+
+        <p></p>
+    </div>
+    <p></p>
+    <div class="note-charcoal-a30-large">
+        <pre>
+SELECT *
+FROM POLITICAL_GROUPS
+ORDER BY PG_ID    
+</pre>
+    </div>
+    <p></p>
+    <div class="note-117">
+        <p>The two new Political Groups which DO NOT HAVE MEMBERS YET,
+            are displayed with the SELECT Statement above.
+        </p>
+    </div>
+
+    <p></p>
+    <p> <img src="../images/c6/political_groups_02.jpg" style="max-width:100% ;" height="auto" alt="All Political Groups"></p>
+    <p></p>
+
+    <div class="note-117">
+        <p>What if we want to include the details of these
+            new Political Groups in the results of our <b>INNER JOIN Query</b>
+            seen below?
+        </p>
+        <p>Can we see these two new Political Groups?</p>
+    </div>
+    <p></p>
+    <div class="note-charcoal-a30-large">
+        <pre>
+select	m.last_name
+,	m.first_name  
+,	p.pg_code
+,	p.pg_name
+<span style="color: rgb(222, 59, 33);">from	meps m
+JOIN	political_groups p
+ON	(m.pg_id=p.pg_id)</span>
+order by p.pg_code
+, 	m.last_name
+, 	m.first_name;
+    </pre>
+        <p></p>
+    </div>
+    <p></p>
+    <p></p>
+
+    <div class="note-117">
+        <p>It is NOT Possible to see the two new Political Groups with
+            our <b>INNER JOIN Condition</b>.
+        </p>
+        <p>This is because;</p>
+        <ul>
+            <li>a NULL is <b>NOT Equal</b> to any other value!</li>
+            <li>a NULL is <b>NOT Equal</b> to any other NULL either!!</li>
+        </ul>
+    </div>
+
+    <p></p>
+    <div class="note-117">
+        <p>Hence, we need <b>another type of JOIN</b>.</p>
+        <p>This new type of JOIN which will display the
+            new Political Groups with <b>NO MEMBERS YET</b>, is called the <b>OUTER JOIN</b>. </p>
+    </div>
+    <p></p>
+
+    <h3 id="def_outer">Definition &mdash; OUTER JOIN</h3>
+    <p> An <b>OUTER JOIN</b> extends the result of a
+        <b>INNER / SIMPLE JOIN</b>.
+    </p>
+
+    <p></p>
+    <p>
+        An <b>OUTER JOIN</b> returns all rows that
+        satisfy the join condition, and also returns some or all of those rows
+        from one table for
+        which no rows from the other satisfy the join condition.</p>
+
+
+    <h3 id="left">LEFT OUTER JOIN</h3>
+    <p></p>
+    <div class="note-95">
+        <p>The SELECT Statement below, selects details of
+            all MEPS in the database,
+            even though they DO NOT belong to a Political Group.
+        </p>
+        <p>As we have seen previously, these Members are called
+            <b>"non-attached Members &mdash; non-inscrits (NI)"</b>,
+            and their <b>PG_ID</b> column has a <b>NULL Value</b>.
+        </p>
+        <p>The SELECT Statement below, is an example of a
+            <b>LEFT OUTER JOIN</b>.
+        </p>
+        <p>For all rows in <b>table MEPS</b> that have no matching rows in
+            <b>table POLITICAL_GROUPS</b>, database
+            returns NULL for any select list expressions containing columns of
+            <b>table POLITICAL_GROUPS</b>.
+        </p>
+        <p>For the <b>"non-attached Members"</b>;</p>
+        <ul>
+            <li><b>p.pg_code</b> column is <b>NULL</b>, they are
+                transformed to a literal value using the function <b>nvl(p.pg_code,'NI')</b> </li>
+            <li><b>p.pg_name</b> column is <b>NULL</b>, they are
+                transformed to a literal value using the function
+                <b>nvl(p.pg_name,'Non-Attached Member')</b>
+            </li>
+        </ul>
+        <p></p>
+    </div>
+    <p></p>
+    <p></p>
+    <div class="note-charcoal-a30-large">
+        <pre>
+select	m.last_name,
+m.first_name,
+nvl(p.pg_code,'NI')  "PG Code",
+nvl(p.pg_name,'Non-Attached Member') "PG Name"
+from	meps m LEFT OUTER JOIN
+political_groups p
+ON	(m.pg_id=p.pg_id)
+order by pg_code desc, 
+m.last_name, 
+m.first_name;  
+    </pre>
+        <p></p>
+    </div>
+    <p></p>
+    <p> <img src="../images/c6/left_outer_01.jpg" style="max-width:100% ;" height="auto" alt="Left Outer"></p>
+    <p> <img src="../images/c6/left_outer_02.jpg" style="max-width:100% ;" height="auto" alt="Left Outer"></p>
+    <p></p>
+    <p></p>
+    <div class="note-95">
+        <p>In this query;
+
+
+        <ul>
+            <li> <b>table MEPS</b> is the
+                <b>Table on the LEFT or the LEFT-HAND-SIDE Table</b>
+            </li>
+            <li> <b>table POLITICAL_GROUPS</b> is the
+                <b>Table on the RIGHT or the RIGHT-HAND-SIDE Table</b>
+            </li>
+        </ul>
+        </p>
+    </div>
+    <p></p>
+    <div class="note-95">
+        <p>Here is a definition of
+            <span class="note-bold-red">LEFT OUTER JOIN</span>:
+        </p>
+        <span class="note-bold-red"></span>
+        <p>***</p>
+        <p><span class="note-bold-red">FROM</span>
+            <b>TABLE_A</b>
+            <span class="note-bold-red">LEFT OUTER JOIN</span>
+            <b>TABLE_B</b>
+        </p>
+
+        <p>For all rows in
+            <b>TABLE_A</b> that have NO matching rows in
+            <b>TABLE_B</b>, database
+            returns <b>NULL</b> for any
+            select list expressions containing <b>columns of TABLE_B</b>.
+        </p>
+        <p>***</p>
+        <p></p>
+    </div>
+    <p></p>
+    <p></p>
+    <p></p>
+    <div class="note-95">
+        <p></p>
+        <p>I also like the following definition for
+            <span class="note-bold-red">LEFT OUTER JOIN</span>:
+        </p>
+        <p>***</p>
+        <p><span class="note-bold-red">FROM</span>
+            <b>TABLE_ON_THE_LEFT </b>
+            <span class="note-bold-red">LEFT OUTER JOIN</span>
+            <b>TABLE_ON_THE_RIGHT</b>
+        </p>
+
+        <p>In a <span class="note-bold-red">LEFT OUTER JOIN</span>,
+            the <b>TABLE_ON_THE_LEFT </b> in the
+            <span class="note-bold-red">FROM Clause </span>
+            is
+            <span class="note-bold-red">OUTER JOINED</span>
+            to the <b>TABLE_ON_THE_RIGHT</b> in the
+            <span class="note-bold-red">FROM Clause</span>.
+        </p>
+        <p>This is what a <span class="note-bold-red">LEFT OUTER JOIN</span> is.</p>
+
+
+
+        <p> <b>Table on the LEFT</b> is
+            <span class="note-bold-red">OUTER JOINED </span>
+            to the
+            <b>Table on the RIGHT</b>.
+        </p>
+
+        <p>***</p>
+        <p></p>
+        <p> <img src="../images/c6/left_outer_join_03.jpg" style="max-width:100% ;" height="auto" alt="Left Outer"></p>
+        <p>Hence, as in the first definition above;</p>
+        <p>For all rows in
+            <b>TABLE_ON_THE_LEFT</b> that have NO matching rows in
+            <b>TABLE_ON_THE_RIGHT</b>, database
+            returns <b>NULL</b> for any
+            select list expressions containing <b>columns of TABLE_ON_THE_RIGHT</b>.
+        </p>
+    </div>
+    <p></p>
+    <p></p>
+
+    <h3 id="right">RIGHT OUTER JOIN</h3>
+    <p></p>
+    <span class="note-bold-red"></span>
+    <div class="note-97">
+        <p></p>
+        <p>The SELECT Statement below, selects details of
+            all the Countries in the database,
+            whether they have any Members in the European Parliament or not.
+        </p>
+        <p>This SELECT Statement, is an example of a
+            <span class="note-bold-red">RIGHT OUTER JOIN</span>.
+        </p>
+        <p>For all rows in <b>table COUNTRIES</b> that have no matching rows in
+            <b>table MEPS</b>, database
+            returns NULL for any select list expressions containing columns of
+            <b>table MEPS</b>.
+        </p>
+        <p>Hence, if there are no matching rows in
+            <b>table MEPS</b> which is the
+            <b>Table on the LEFT or the LEFT-HAND-SIDE Table</b> in the
+            <span class="note-bold-red">FROM Clause</span>,
+            the <span class="note-bold-red">RIGHT OUTER JOIN</span>
+            will return <b>NULLS</b> for the following columns:
+        <ul>
+            <li>m.last_name</li>
+            <li>m.first_name</li>
+            <li>m.pg_id</li>
+        </ul>
+        <b></b>
+        </p>
+
+    </div>
+    <p></p>
+    <span class="note-bold-red"></span>
+    <p></p>
+    <p></p>
+    <div class="note-charcoal-a30-large">
+        <pre>
+select	c.country_id,
+c.country_name,	
+m.last_name,	
+m.first_name,	
+m.pg_id
+from	meps m
+RIGHT OUTER JOIN countries c
+ON	(m.country_id=c.country_id)
+order by c.country_id,	
+m.last_name, 	
+m.first_name; 
+        </pre>
+        <p></p>
+    </div>
+    <p></p>
+    <!--    <p> <img src="right_outer_01.jpg" style="max-width:100% ;" height="auto" alt="Left Outer"></p>
+  -->
+
+    <p> <img src="../images/c6/right_outer_02.jpg" style="max-width:100% ;" height="auto" alt="Right Outer"></p>
+    <p></p>
+    <div class="note-97">
+        <p>In this query;
+
+
+        <ul>
+            <li> <b>table MEPS</b> is the
+                <b>Table on the LEFT or the LEFT-HAND-SIDE Table</b>
+            </li>
+            <li> <b>table COUNTRIES</b> is the
+                <b>Table on the RIGHT or the RIGHT-HAND-SIDE Table</b>
+            </li>
+        </ul>
+        </p>
+    </div>
+    <p></p>
+    <div class="note-97">
+        <span class="note-bold-red"></span>
+        <p>Here is a definition of
+            <span class="note-bold-red">RIGHT OUTER JOIN</span>:
+        </p>
+        <span class="note-bold-red"></span>
+        <p><b> <span class="note-bold-red">FROM</span> TABLE_A
+                <span class="note-bold-red">RIGHT OUTER JOIN</span> TABLE_B</b></p>
+        <p>For all rows in
+            <b>TABLE_B</b> that have NO matching rows in
+            <b>TABLE_A</b>, database
+            returns <b>NULL</b> for any
+            select list expressions containing <b>columns of TABLE_A </b>.
+        </p>
+        <p></p>
+    </div>
+
+    <p></p>
+    <div class="note-97">
+        <p></p>
+        <p>I also like the following definition for
+            <span class="note-bold-red">RIGHT OUTER JOIN</span>:
+        </p>
+        <p>***</p>
+        <p><span class="note-bold-red">FROM</span>
+            <b>TABLE_ON_THE_LEFT </b>
+            <span class="note-bold-red">RIGHT OUTER JOIN</span>
+            <b>TABLE_ON_THE_RIGHT</b>
+        </p>
+
+        <p>In a <span class="note-bold-red">RIGHT OUTER JOIN</span>,
+            the <b>TABLE_ON_THE_RIGHT </b> in the
+            <span class="note-bold-red">FROM Clause </span>
+            is
+            <span class="note-bold-red">OUTER JOINED</span>
+            to the <b>TABLE_ON_THE_LEFT</b> in the
+            <span class="note-bold-red">FROM Clause</span>.
+        </p>
+        <p>This is what a <span class="note-bold-red">RIGHT OUTER JOIN</span> is.</p>
+
+
+
+        <p> <b>Table on the RIGHT</b> is
+            <span class="note-bold-red">OUTER JOINED </span>
+            to the
+            <b>Table on the LEFT</b>.
+        </p>
+
+        <p>***</p>
+        <p></p>
+        <p> <img src="../images/c6/right_outer_join_01.jpg" style="max-width:100% ;" height="auto" alt="Right Outer"></p>
+        <p>Hence, as in the first definition above;</p>
+        <p>For all rows in
+            <b>TABLE_ON_THE_RIGHT</b> that have NO matching rows in
+            <b>TABLE_ON_THE_LEFT</b>, database
+            returns <b>NULL</b> for any
+            select list expressions containing <b>columns of TABLE_ON_THE_LEFT</b>.
+        </p>
+    </div>
+    <p></p>
+
+
+
+    <h3 id="full">FULL OUTER JOIN</h3>
+    <p></p>
+    <div class="note-117">
+        <p>We want to write a query which displays all of the following:</p>
+        <ul>
+            <li>all Political Groups and their Members </li>
+            <li>Political Groups that have
+                just been formed, therefore have NO Members yet </li>
+            <li>Members of the EP who are NOT attached to a Political Group </li>
+        </ul>
+        <p></p>
+        <p></p>
+    </div>
+    <p></p>
+    <p></p>
+    <div class="note-117">
+        <p>The following SELECT Statement which uses
+            a <b>FULL OUTER JOIN</b> does just that.
+        </p>
+    </div>
+    <p></p>
+    <p></p>
+    <p></p>
+    <p></p>
+    <div class="note-charcoal-a30-large">
+        <pre>
+select	m.last_name,
+m.first_name,	
+p.pg_id "Political Group ID",
+nvl(p.pg_code,'NI')  "PG Code",	
+nvl(p.pg_name,'Non-Attached Member') "PG Name"
+from	meps m 
+FULL OUTER JOIN
+political_groups p
+ON	(m.pg_id=p.pg_id)
+order by p.pg_id, 
+m.last_name, 
+m.first_name; 
+        </pre>
+        <p></p>
+    </div>
+    <p></p>
+    <p> <img src="../images/c6/full_outer_01.jpg" style="max-width:100% ;" height="auto" alt="Full Outer"></p>
+    <p></p>
+    <p> <img src="../images/c6/full_outer_03.jpg" style="max-width:100% ;" height="auto" alt="Full Outer"></p>
+
+    <span class="note-bold-red"></span>
+    <div class="note-117">
+        <span class="note-bold-red"></span>
+        <p>Here is a definition of
+            <span class="note-bold-red">FULL OUTER JOIN</span>:
+        </p>
+        <span class="note-bold-red"></span>
+        <p>***</p>
+        <p><span class="note-bold-red">FROM</span>
+            <b>TABLE_ON_THE_LEFT </b>
+            <span class="note-bold-red">FULL OUTER JOIN</span>
+            <b>TABLE_ON_THE_RIGHT</b>
+        </p>
+        <p>***</p>
+        <p>To write a query that returns;
+        <ul>
+            <li>ALL ROWS from <b>the TABLE_ON_THE_LEFT</b>
+                or <b>the LEFT-HAND-SIDE Table</b> or <b>table MEPS in this case</b></li>
+            <p>and</p>
+            <li>ALL ROWS from <b>the TABLE_ON_THE_RIGHT</b>
+                or <b>the RIGHT-HAND-SIDE Table</b> or <b>table POLITICAL_GROUPS in this case</b></li>
+            <p>and</p>
+            <li><b>Extended with NULLS </b> if they do not satisfy the
+                <b>ON Condition (ON (m.pg_id=p.pg_id))</b>
+            </li>
+        </ul>
+        we use a <span class="note-bold-red">FULL OUTER JOIN</span>.
+        </p>
+    </div>
+    <p></p>
+
+
+    <h2 id="more_than_two">JOINING MORE THAN TWO TABLES</h2>
+    <p></p>
+    <ul>
+        <li><a href="#more_than_two_comms">COMMITTEES Table</a></li>
+        <li><a href="#more_than_two_fk_table">MEP_COMM_DELG_ROLES Table</a></li>
+        <li><a href="#more_than_two_report">Report for the Conference of the Presidents</a></li>
+        <li><a href="#more_than_two_n_1">TO JOIN N TABLES WE NEED A MINIMUM OF N-1 JOINS</a></li>
+    </ul>
+    <h3 id="more_than_two_comms">COMMITTEES Table</h3>
+
+
+
+    <div class="note-95">
+        <p>Below we can see the contents of the <b>COMMITTEES</b> table. </p>
+        <p>This table holds details of the Committees of the EP. </p>
+        <p><b>COMM_ID</b> column is the Primary Key of this table.</p>
+
+    </div>
+    <p></p>
+    <div class="note-charcoal-a30-large">
+        <pre>
+select	comm_id,	
+comm_code,	
+comm_type,	
+comm_name
+from committees 
+order by comm_id;
+        </pre>
+        <p></p>
+    </div>
+    <p></p>
+    <p> <img src="../images/c6/committees_01.jpg" style="max-width:100% ;" height="auto" alt="committees_01"></p>
+    <p></p>
+    <h3 id="more_than_two_fk_table">MEP_COMM_DELG_ROLES Table</h3>
+
+    <div class="note-97">
+        <p>We also have a table named <b>MEP_COMM_DELG_ROLES</b>, which holds information on;</p>
+        <ul>
+            <li>which MEP takes part in which Committee and in which Delegation</li>
+            <li>what are his/her roles in these Committees and Delegations</li>
+        </ul>
+        <p>Since the Members of the EP are very active and
+            one MEP takes part in more than one Committee and Delegation,
+            this table is loaded with information.</p>
+        <p>Here is the structure of this table:</p>
+    </div>
+    <p></p>
+    <p> <img src="../images/c6/mep_comm_delg_role_02.jpg" style="max-width:100% ;" height="auto" alt="mep_com_delg_role_01.jpg"></p>
+    <p></p>
+    <div class="note-97">
+        <p>Here is the <b>ER Diagram of the European Parliament</b>.</p>
+        <p>We came up with this ER Diagram in Chapter 2 (Data Modelling and Normalization),
+            which is in <b>3rd Normal Form</b>, i.e. <b>3NF</b>. </p>
+        <p></p>
+        <p> <img src="../images/c6/our_er_model_ep_02.jpg" style="max-width:100% ;" height="auto"
+                alt="Our ER Model our_er_model_ep_02.jpg"></p>
+    </div>
+    <p></p>
+    <p></p>
+    <div class="note-97">
+        <p>Below is the <b>CREATE TABLE</b> Command for the table <b>MEP_COMM_DELG_ROLES</b>. </p>
+        <p></p>
+    </div>
+    <p></p>
+    <p></p>
+    <div class="note-charcoal-a30-large">
+        <pre>
+create table	MEP_COMM_DELG_ROLES
+(mep_id		number(10)
+        constraint mep_comm_delg_roles_mep_id_fk  
+        references MEPS(mep_id)
+        constraint mep_comm_delg_roles_mep_id_nn not null
+,role_id	number(10)
+        constraint mep_comm_delg_roles_role_id_fk
+        references ROLES(role_id)
+        constraint mep_comm_delg_roles_role_id_nn not null
+,comm_id	number(10)
+        constraint mep_comm_delg_roles_comm_id_fk 
+        references COMMITTEES(comm_id)
+,delg_id	number(10)
+        constraint mep_comm_delg_roles_delg_id_fk 
+        references DELEGATIONS(delg_id)
+,		constraint mep_comm_delg_roles_un
+        unique (mep_id, role_id, comm_id, delg_id)			
+);
+
+comment on table MEP_COMM_DELG_ROLES is
+'This table holds roles of MEPs in the EP Committees and EP Delegations only.
+The values in the ROLE_ID Column of the table can be one of the following:
+110=Chairman/Chairwoman of a Committee or a Delegation,
+140=Vice Chairman/Vice Chairwoman of a Committee or a Delegation,
+170=Member in a Committee or a Delegation,
+180=Substitute in a Committee or in a Delegation
+';
+        </pre>
+        <p></p>
+    </div>
+    <p></p>
+    <p></p>
+    <div class="note-97">
+        <p>We can see below the <b>Constraints</b> of the table created by the
+            <b>CREATE TABLE Command</b>.
+        </p>
+        <p></p>
+        <p> <img src="../images/c6/mep_comm_delg_role_04.jpg" style="max-width:100% ;" height="auto"
+                alt="Constraints mep_comm_delg_role_04.jpg"></p>
+
+    </div>
+    <p></p>
+    <p></p>
+    <div class="note-97">
+        <p>This table, table <b>MEP_COMM_DELG_ROLES</b> only holds the <b>Primary Key Values</b> of
+            the following tables: </p>
+        <ul>
+            <li><b>MEPS</b></li>
+            <li><b>ROLES</b></li>
+            <li><b>COMMITTEES</b></li>
+            <li><b>DELEGATIONS</b></li>
+        </ul>
+        <p></p>
+    </div>
+    <p></p>
+
+    <div class="note-97">
+        <b></b>
+        <p>Therefore, each of the columns
+            <b>MEP_ID</b>,
+            <b>ROLE_ID</b>,
+            <b>COMM_ID</b>, and
+            <b>DELG_ID</b> of the table <b>MEP_COMM_DELG_ROLES</b>
+            are <b>Foreign Keys</b>
+            Referencing the <b>Primary Keys</b> of
+            <b>MEPS</b>,
+            <b>ROLES</b>,
+            <b>COMMITTEES</b>, and
+            <b>DELEGATIONS</b> tables respectively.
+        </p>
+        <p></p>
+        <p></p>
+    </div>
+    <p></p>
+    <p></p>
+    <h3 id="more_than_two_report">Report for the Conference of the Presidents</h3>
+
+    <div class="note-117">
+        <b></b>
+        <p>We are asked to create a report for
+            <b>the Conference of the Presidents </b>
+            which displays;
+        </p>
+        <ul>
+            <li>the <b>Committee Codes</b></li>
+            <li>the <b>Committee Names</b></li>
+            <li>the <b>Names of the Members of the Parliament</b>
+                who take part in these Committees</li>
+        </ul>
+        <p></p>
+    </div>
+    <p></p>
+    <p></p>
+    <div class="note-117">
+        <p>In order to retrieve the information requested from us,
+            we need to access these tables: </p>
+        <ul>
+            <li><b>MEPS</b> </li>
+            <li><b>COMMITTEES</b> </li>
+            <li><b>MEP_COMM_DELG_ROLES </b></li>
+        </ul>
+        <p></p>
+    </div>
+    <p></p>
+
+    <div class="note-117">
+        <p></p>
+        <ul>
+            <li><b>MEPS</b> table has the names of the Members of the EP.</li>
+            <li><b>COMMITTEES</b> table has the <b>Codes</b> and the <b>Names</b>
+                of the <b>Committees</b>. </li>
+            <li><b>MEP_COMM_DELG_ROLES </b> table has the necessary
+                <b>Foreign Keys</b> to relate <b>MEPS</b> and <b>COMMITTEES</b>.
+            </li>
+        </ul>
+
+        <p></p>
+        <p>Below we can see the query of this report and some of its output.</p>
+    </div>
+    <p></p>
+    <!-- -->
+    <p></p>
+    <div class="note-charcoal-a30-large">
+        <pre>
+select	cm.comm_code	"Code",
+cm.comm_name	"Name",
+m.last_name||' '||m.first_name "Member of the EP"
+from mep_comm_delg_roles mr
+JOIN meps m
+ON (mr.mep_id =m.mep_id)
+JOIN committees cm
+ON (mr.comm_id=cm.comm_id)
+order by cm.comm_code, 
+m.last_name;
+        </pre>
+        <p></p>
+    </div>
+    <p></p>
+    <p> <img src="../images/c6/mep_comm_delg_role_05.jpg" style="max-width:100% ;" height="auto"
+            alt="a Report on More Than Two Tables mep_comm_delg_role_05.jpg"></p>
+
+    <p></p>
+
+
+    <h3 id="more_than_two_n_1">TO JOIN N TABLES WE NEED A MINIMUM OF N-1 JOINS</h3>
+    <p></p>
+    <b></b>
+    <div class="note-97">
+        <p></p>
+        <p></p>
+        <p>We can see the <b>JOIN Clause</b> of the
+            report below:</p>
+    </div>
+    <p></p>
+    <p></p>
+    <div class="note-charcoal-a30-large">
+        <pre class="note-bold-red">
+from mep_comm_delg_roles mr
+JOIN meps m
+ON (mr.mep_id =m.mep_id)
+JOIN committees cm
+ON (mr.comm_id=cm.comm_id)  
+          </pre>
+    </div>
+    <p></p>
+    <p></p>
+    <div class="note-97">
+        <p> To JOIN <b>THREE TABLES</b>,
+            we USED <b>TWO JOINS</b>. </p>
+        <p>This is the
+            <b>MINIMUM NUMBER of JOINS NECESSARY</b>
+            to JOIN THREE TABLES.
+        </p>
+        <p><b>TO JOIN N TABLES, WE NEED A MINIMUM OF N-1 JOINS.</b></p>
+    </div>
+    <p></p>
+
+    <!-- -->
+
+    <h2 id="self">SELF JOIN</h2>
+    <ul>
+        <li><a href="#self_join_report">We Want to Create this Self-Join Report</a></li>
+        <li><a href="#self_join_report_output">Self-Join Report Output</a></li>
+        <li><a href="#self_meps">Structure of table MEPS</a></li>
+        <li><a href="#self_simple">Simple Query on table MEPS</a></li>
+        <li><a href="#self_manual">Create the Report Manually</a></li>
+        <li><a href="#self_join_method">The SELF-JOIN Method</a></li>
+        <li><a href="#self_one_join">SELECT Statement for the SELF-JOIN Report</a></li>
+        <li><a href="#self_two_joins">An Example with Two Self-Referencing Foreign Keys </a></li>
+    </ul>
+    <p></p>
+    <div class="note-95">
+        <p>A <b>SELF JOIN</b> is a type of join,
+            where <b>a table is joined onto itself</b>. </p>
+        <p>We need to use this type of join,
+            when all the information we need is in a
+            <b>Single Table</b>,
+            but in <b>Different Rows of that table</b>.
+        </p>
+    </div>
+    <p></p>
+    <p></p>
+    <h3 id="self_join_report">We Want to Create this Self-Join Report</h3>
+    <div class="note-95">
+        <b>We want to create the following report:</b>
+        <p>Let's say we want to create a report which displays;</p>
+        <ul>
+            <li>the Name of each Member of the European Parliament
+                (<span class="note-bold-red">MEP Name</span>)
+            </li>
+            and
+            <li>the Name of the Chair or the Name of the Co-chair1
+                of his/her Political Group
+                (<span class="note-bold-red">Chair Name</span>)</li>
+
+        </ul>
+        <p>The report will look like the following &mdash;
+            not all rows are displayed.
+        </p>
+    </div>
+
+    <h3 id="self_join_report_output">Self-Join Report Output</h3>
+    <p><img src="../images/c6/self_join_01.jpg" style="max-width:100% ;" height="auto" alt="Self Join Example self_join_01.jpg"></p>
+    <p><img src="../images/c6/self_join_02.jpg" style="max-width:100% ;" height="auto" alt="Self Join Example self_join_02.jpg"></p>
+    <p></p>
+    <div class="note-97">
+        <b></b>
+        <p>In the report output displayed above, we can see that
+            the Members of the Parliament <b>Vito Bonsignore</b> (in the first row),
+            <b>Gunnar Hökmark</b>, and many others are in the Political Group which
+            is headed by Joseph Daul, i.e.
+            <b>Joseph Daul</b> is the <b>Chair</b> of
+            these MEPS.
+        </p>
+        <p>Likewise, Members of the Parliament
+            <b>Bernard Wojciechowski</b> (in the last row),
+            <b>Witold Tomczak</b>, and many others
+            are in the Political Group which is headed
+            by Hanne Dahl, i.e. <b>Hanne Dahl</b> is the
+            <b>Chair</b> of these MEPS.
+        </p>
+        <p>All the information above come from <b>table MEPS</b>.</p>
+    </div>
+    <p></p>
+    <h3 id="self_meps">Structure of table MEPS</h3>
+    <div class="note-95">
+        <p>Structure of table MEPS is as follows:</p>
+    </div>
+    <p></p>
+    <p><img src="../images/c6/table_meps_01.jpg" style="max-width:100% ;" height="auto" alt="Structure of Table MEPS"></p>
+    <div class="note-95">
+        <ul>
+            <li>Each row is uniquely identified by the column <b>MEP_ID</b>
+                which is the
+                <b>Primary Key</b> of the <b>MEPS</b> table.
+                It holds the <b>ID of the Member of the Parliament</b>.
+            </li>
+            <li>Columns
+                <b>FIRST_NAME</b> and
+                <b>LAST_NAME</b> hold the values of
+                the <b>Name of the Member of the Parliament</b>.
+            </li>
+            <li>Column <b>PG_CHAIR_OR_COCHAIR1</b> holds the <b>MEP_ID</b> of the
+                <b>Chair of the Political Group</b> this Member in the current row
+                belongs to.
+            </li>
+            <li>If there are <b> Co-Chairs</b> heading the Political Group,
+                then, the column <b>PG_CHAIR_OR_COCHAIR1</b> holds the
+                <b>MEP_ID</b> of the
+                <b>First Chair</b>, and the column <b>PG_COCHAIR2</b>
+                holds the
+                <b>MEP_ID</b> of the <b>Second Chair</b>.
+            </li>
+        </ul>
+
+        <p></p>
+        <p></p>
+
+        <p>We query these columns using the
+            following SELECT Statement.
+        </p>
+    </div>
+    <p></p>
+    <h3 id="self_simple">Simple Query on table MEPS</h3>
+    <div class="note-charcoal-a30-large">
+        <pre>
+select	mep_id,	
+first_name,
+last_name,	
+pg_chair_or_cochair1
+from meps
+order  by pg_chair_or_cochair1, mep_id;
+    </pre>
+        <p></p>
+    </div>
+    <p>Below are some of the output images of the SELECT
+        Statement above. Not all rows are displayed.
+    </p>
+    <p><img src="../images/c6/table_meps_02.jpg" style="max-width:100% ;" height="auto" alt="Select from Table MEPS"></p>
+    <p><img src="../images/c6/table_meps_03.jpg" style="max-width:100% ;" height="auto" alt="Select from Table MEPS"></p>
+    <p><img src="../images/c6/table_meps_04.jpg" style="max-width:100% ;" height="auto" alt="Select from Table MEPS"></p>
+    <p></p>
+    <div class="note-97">
+        <p></p>
+
+        <p><img src="../images/c6/table_meps_05.jpg" style="max-width:100% ;" height="auto" alt="Select from Table MEPS"></p>
+        <p>The first row returned from the query has:
+        <ul>
+            <li><b>MEP_ID = 20002</b></li>
+            <li><b>FIRST_NAME = Vito</b></li>
+            <li><b>LAST_NAME = Bonsignore</b></li>
+            <li><b>PG_CHAIR_OR_COCHAIR1 = 20001</b></li>
+        </ul>
+        </p>
+        <p>But we do not see the
+            <b>FIRST_NAME</b> and
+            <b>LAST_NAME</b> of the <b>Chair</b> in this row.
+        </p>
+
+        <p>***</p>
+        <p>The second row returned from the query has:
+        <ul>
+            <li><b>MEP_ID = 20003</b></li>
+            <li><b>FIRST_NAME = Gunnar</b></li>
+            <li><b>LAST_NAME = Hökmark</b></li>
+            <li><b>PG_CHAIR_OR_COCHAIR1 = 20001</b></li>
+        </ul>
+        </p>
+        <p>But we do not see the
+            <b>FIRST_NAME</b> and
+            the <b>LAST_NAME</b> of the <b>Chair</b> in this row, either.
+        </p>
+
+    </div>
+    <p></p>
+    <div class="note-97">
+        <p>However, looking at the query output,
+            we can see that the <b>Chair</b>
+            of the Members
+            in the first row and the second row is
+            the same person; the person with
+            <b>PG_CHAIR_OR_COCHAIR1 = 20001</b>.
+        <p><b>PG_CHAIR_OR_COCHAIR1 = 20001</b> means that
+            <b>MEP_ID of the Chair = 20001</b>.
+        </p>
+        </p>
+        <p>How can we find the
+            <b>FIRST_NAME</b> and
+            the <b>LAST_NAME</b>
+            of this person <b>(MEP_ID = 20001) </b>
+            and print these details
+            <span class="note-bold-red">in the same row with </span>
+            the members
+            <b>Vito Bonsignore</b> and
+            <b>Gunnar Hökmark</b> and many others,
+            as seen in the
+            <a href="#self_join_report_output">Report Output above?</a>
+        </p>
+    </div>
+    <p></p>
+
+    <div class="note-97">
+
+
+        <p>This <b>Chair Person</b> is also a Member of the Parliament.</p>
+
+        <p>Since this person is also a Member of the Parliament,
+            his details are in the MEPS table as details of
+            all the other Members are. </p>
+        <p>This <b>Chair Person</b> has <b>MEP_ID = 20001</b>.</p>
+        <p>We find the row with <b>MEP_ID=20001</b>.</p>
+        <p><img src="../images/c6/table_meps_06.jpg" style="max-width:100% ;" height="auto" alt="Chair 20001"></p>
+        <p>This row has the values; <b>FIRST_NAME = 'Joseph'</b>,
+            <b>LAST_NAME = 'Daul'</b>, and <b>PG_CHAIR_OR_COCHAIR1 = (null)</b>.
+        </p>
+        <p>We found the
+            <b>FIRST_NAME</b> and
+            the <b>LAST_NAME</b>
+            of <b>the Chair (MEP_ID = 20001) </b>.
+            We can now print these details
+            <span class="note-bold-red">in the same row with </span>
+            the members as requested in the Report.
+        </p>
+
+    </div>
+    <p></p>
+
+    <div class="note-117">
+        <p>(null) is the display value for NULL in SQL Developer preferences.
+            Hence we know that <b>PG_CHAIR_OR_COCHAIR1 IS NULL</b>. </p>
+        <p>A NULL value in the <b>PG_CHAIR_OR_COCHAIR1</b>
+            column indicates that this person (Joseph Daul) does not have
+            a Chair &mdash; which is correct!
+        </p>
+    </div>
+    <p></p>
+    <h3 id="self_manual">Create the Report Manually</h3>
+    <div class="note-97">
+        <p>We can actually keep going through the algorithm in the paragraphs above,
+            and create the <a href="#self_join_report_output">Report Output above </a>
+            manually. </p>
+        <p style="font-size: 48px;"> Manually ? &#129325; &#129315; &#129303;
+        </p>
+        <p>It would take us some time ... </p>
+        <p>
+            <span style="font-size: 24px;  ">&#127793;</span>
+            <span style="font-size: 84px;  ">&#127807;</span>
+            <span style="font-size: 150px;  ">&#127795;</span>
+        </p>
+        <p>But still, we can create the report requested from us.</p>
+    </div>
+    <p></p>
+    <h3 id="self_join_method">The SELF-JOIN Method</h3>
+    <div class="note-97">
+        <p>However, there is a much more simple and definitely a quicker way than
+            creating <a href="#self_join_report_output">this report </a> manually.
+        </p>
+        <p>It is called a <b>SELF-JOIN</b>. </p>
+        <p>In a <b>SELF-JOIN</b>, we join a table <b>onto itself</b>. </p>
+    </div>
+    <p></p>
+
+    <div class="note-97">
+        <div class="note-97">
+            <p>In an <b>ordinary join</b>, we usually join
+                <b>the Foreign Key Column</b> of one table,
+                to <b>the Primary Key Column</b> of another table &mdash;
+                the tables we want to retrieve information from.
+            </p>
+        </div>
+        <p></p>
+        <div class="note-97">
+            <p>In a <b>SELF-JOIN</b>, we join <b>the Foreign Key Column</b>
+                of a table, to <b>the Primary Key Column</b> of
+                the <b>same table</b> &mdash; because this table is the
+                only table we can get the required information from.
+            </p>
+        </div>
+    </div>
+    <p></p>
+
+    <div class="note-97">
+        <p>In fact, there actually is
+            <b>a Foreign Key - Primary Key Relationship</b> within
+            table <b>MEPS</b>.
+        </p>
+        <p>Such a table is called a
+            <b>Self-Referencing Table</b>.
+        </p>
+    </div>
+    <p>We can see below part of our ER Diagram with table <b>MEPS</b>,
+        and the <b>Self-Referencing Relationship</b>.
+    </p>
+
+    <p><img src="../images/c6/table_meps_07.jpg" style="max-width:100% ;" height="auto" alt="Self Referencing Table MEPS"></p>
+
+    <div class="note-97">
+        <p>Below is the <b>CREATE TABLE</b>
+            Statement of <b>table MEPS</b>. </p>
+        <p>We can see <b>two self-referencing relationships</b>
+            in this DDL (Data Definition Language) Command:</p>
+        <ul>
+            <li>Column <b>PG_CHAIR_OR_COCHAIR1</b> is a <b>Foreign Key</b>,
+                <b>referencing</b> the column <b>MEP_ID</b> which is the
+                <b>Primary Key</b> of table <b>MEPS</b>.
+                This <b>Foreign Key Constraint</b> is named <b>PG_CHAIR_COCHAIR1_FK</b>.
+
+            </li>
+
+            <li>Column <b>PG_COCHAIR2</b> is a <b>Foreign Key</b>,
+                <b>referencing</b> the column <b>MEP_ID</b> which is the
+                <b>Primary Key</b> of table <b>MEPS</b>.
+                This <b>Foreign Key Constraint</b> is named <b>PG_COCHAIR2_FK</b>.
+            </li>
+        </ul>
+        <p></p>
+    </div>
+    <p></p>
+
+    <div class="note-charcoal-a30-large">
+        <pre>
+create table MEPS
+(mep_id	number(10)
+    constraint mep_id_pk primary key
+,first_name	varchar2(120)
+,last_name varchar2(120)
+    constraint last_name_nn not null
+,salary number(9,2)
+,bonus_pct number(5,4)
+,email varchar2(240)
+    constraint email_nn not null
+    constraint email_unique unique
+,tel varchar2(20)
+,internet varchar2(120)
+,start_date date
+,country_id varchar2(4)
+    constraint country_id_fk
+    references COUNTRIES(country_id)
+,pg_id number(10)
+    constraint pg_id_fk 
+    references POLITICAL_GROUPS(pg_id)
+,pg_chair_or_cochair1 number(10)
+    constraint pg_chair_cochair1_fk
+    references MEPS(mep_id)
+,pg_cochair2 number(10)
+    constraint pg_cochair2_fk
+    references MEPS(mep_id)
+);
+        </pre>
+        <p></p>
+    </div>
+    <p></p>
+    <h3 id="self_one_join">SELECT Statement for the SELF-JOIN Report </h3>
+    <div class="note-95">
+        <p>We now build up the SELECT Statement for the
+            <a href="#self_join_report_output">SELF-JOIN Report.</a>
+        </p>
+        <p>We go through the following steps to build up the SELECT Statement.</p>
+
+        <ol>
+            <li>We assume that we have <b>two instances</b> of table <b>MEPS</b>.</li>
+            <li><b>First instance</b> holds details of the
+                <b>Members of the Parliament</b>.
+            </li>
+            <li><b>Second instance</b> holds details
+                of the <b>Chairs and/or Co-Chairs</b> of the
+                <b>Political Groups</b>.
+            </li>
+            <li>We give each instance an <b>ALIAS</b> to make things clearer. </li>
+            <li>Let's call the first instance <b>mep</b>, for <b>Members</b>.
+                <b>Alias</b> of the first instance is <b>mep</b>.
+            </li>
+            <li>Let's call the second instance <b>chair</b>, for <b>Chairs</b>.
+                <b>Alias</b> of the second instance is <b>chair</b>.
+            </li>
+            <li>Our join condition will be:
+                <div class="note-95">
+                    <b>ON (mep.pg_chair_co_chair1 = chair.mep_id)</b>
+                </div>
+
+                <p>The Join Condition is written like above, because; </p>
+                <ul>
+                    <li>In table with alias <b>mep</b> the
+                        <span class="note-bold-red">"ID of the Chair of a Member"</span> is
+                        <b>the value</b> in column <b>pg_chair_co_chair1</b>.
+                    </li>
+                    <li>This ID value
+                        (<span class="note-bold-red">"ID of the Chair of a Member"</span>) equals to the
+                        value of the
+                        <b>mep_id </b> column in the table with alias <b>chair</b>.
+                    </li>
+                </ul>
+            </li>
+        </ol>
+
+
+    </div>
+    <p>Our SELECT statement which has a Self Join will be:</p>
+    <p></p>
+    <div class="note-charcoal-a30-large">
+        <pre>
+select mep.first_name||' '||mep.last_name "MEP Name",
+chair.first_name||' '||chair.last_name "Chair Name"
+from meps mep
+join meps chair
+on (mep.pg_chair_or_cochair1=chair.mep_id)
+order by mep.pg_chair_or_cochair1, 
+mep.mep_id;    
+            </pre>
+        <p></p>
+
+        <p><img src="../images/c6/self_join_03.jpg" style="max-width:100% ;" height="auto"
+                alt="Self Referencing Table MEPS with Chair Names"></p>
+
+        <p></p>
+
+    </div>
+    <p></p>
+    <p></p>
+    <div class="note-95">
+        <p></p>
+
+        <p>The output of the SELECT Statement is the same as
+            the <a href="#self_join_report_output">SELF-JOIN Report</a>.
+        </p>
+        <p>This was an example of a <b>SELF-JOIN</b> with
+            <b>One Self-Referencing Foreign Key</b>.
+        </p>
+    </div>
+    <p></p>
+
+    <h3 id="self_two_joins">An Example with Two Self-Referencing Foreign Keys </h3>
+    <div class="note-97">
+        <p>We now have an example of a <b>SELF-JOIN</b> with
+            <b>Two Self-Referencing Foreign Keys</b>.
+        </p>
+        <p>We create a report where we display
+            <b>NOT ONLY the Chair</b>,
+            <b>BUT ALSO we display both Chairs</b>,
+            <span class="note-bold-red">if the Political Group has Co-Chairs</span>.
+        </p>
+        <p>In this case, we access the table <b>MEPS</b>
+            three times:</p>
+        <ul>
+            <li>For the Members, where the alias is <b>mep</b></li>
+            <li>For the First Chair, where the alias is <b>chair1</b></li>
+            <li>For the Second Chair, where the alias is <b>chair2</b></li>
+        </ul>
+        <p>Join Condition for this report is seen below.</p>
+    </div>
+    <p></p>
+    <div class="note-97">
+        <div style="font-size: x-large;">
+            <pre>
+from meps mep    
+join meps chair1
+on (mep.pg_chair_or_cochair1=chair1.mep_id)
+left outer join	meps chair2
+on (mep.pg_cochair2=chair2.mep_id)      
+</pre>
+        </div>
+    </div>
+    <p></p>
+    <div class="note-97">
+        <p>This Join Condition uses the two
+            <b>Two Self-Referencing Foreign Keys</b> of the
+            table <b>MEPS</b>.
+        </p>
+        <p><img src="../images/c6/meps_two_self_fk_01.jpg" alt="MEPS Table Two Self-Referencing Foreign Keys"
+                style="max-width: 100%; height: auto;"></p>
+
+        <p></p>
+    </div>
+    <p></p>
+
+    <div class="note-charcoal-a30-large">
+        <pre>
+select mep.first_name||' '||mep.last_name "MEP Name",	
+chair1.first_name||' '||chair1.last_name "Chair / Cohair 1 Name",
+chair2.first_name||' '||chair2.last_name "Cohair 2 Name"
+from meps mep
+join meps chair1
+on (mep.pg_chair_or_cochair1=chair1.mep_id)
+left outer join	meps chair2
+on (mep.pg_cochair2=chair2.mep_id)
+order by mep.pg_chair_or_cochair1, mep.mep_id;       
+                </pre>
+        <p></p>
+    </div>
+    <p><img src="../images/c6/two_chairs_01.jpg" style="max-width:100% ;" height="auto" alt="Self Referencing with Two Chairs"></p>
+    <p><img src="../images/c6/two_chairs_02.jpg" style="max-width:100% ;" height="auto" alt="Self Referencing with Two Chairs"></p>
+
+    <p></p>
+
+
+
+    <h2 id="cartes">CROSS JOIN / CARTESIAN PRODUCT</h2>
+    <ul>
+        <li><a href="#cartes_def">Definition of Cartesian Product</a></li>
+        <li><a href="#cartes_use">Uses of Cartesian Product</a></li>
+        <li><a href="#cartes_ex">Example on Cartesian Product</a></li>
+        <li><a href="#cartes_cross">The CROSS JOIN Clause</a></li>
+    </ul>
+    <p></p>
+
+    <h3 id="cartes_def">Definition of Cartesian Product</h3>
+
+    <div class="note-95">
+        <p>In a SELECT Statement with two tables,
+            when a Join Condition is omitted, when there is
+            NO Join Condition, or when the Join Condition is Invalid,
+            the query returns all combination of rows. </p>
+        <p> All rows in the first table are joined to
+            all rows in the second table.</p>
+        <p>The result is a <b>Cartesian Product of two Tables</b>.</p>
+        <p></p>
+        <p></p>
+    </div>
+    <p></p>
+    <div style="font-style: italic;">
+        <p>We have learned about <b>Cartesian Product</b> in
+            "Chapter 1: A Relational Approach".
+
+        </p>
+        <p>The section on Cartesian Product is under
+            <b> "Two Theoretical Languages / Relational Algebra / Product" </b>
+            of <b>"Chapter 1: A Relational Approach"</b>.
+        </p>
+        <p>The detailed definition of Cartesian Product below,
+            is taken from that section.</p>
+
+    </div>
+
+    <div class="note-95">
+        <p></p>
+        <ul>
+            <li>The
+                <span class="note-bold">PRODUCT</span> of two tables is a
+                combination of all rows in both tables.
+            </li>
+            <li>It is also known as a
+                <span class="note-bold">CARTESIAN PRODUCT</span>.
+            </li>
+            <li>It can cause huge results with big tables.</li>
+        </ul>
+    </div>
+    <p></p>
+
+
+
+
+
+    <div class="note-97">
+        <p></p>
+        <ul>
+            <li>If the First Table has <span class="note-bold">X number of Rows</span>, and
+                the Second Table has <span class="note-bold">Y number of Rows</span>,
+                then the Resulting Table has
+                <span class="note-bold">X TIMES Y</span> number of Rows.
+            </li>
+            <li>If the First Table has <span class="note-bold">M number of Columns</span>,
+                and the Second Table has
+                <span class="note-bold">N number of Columns</span>, then the Resulting Table has
+                <span class="note-bold">M PLUS N</span> number of columns.
+
+            </li>
+        </ul>
+    </div>
+    <p></p>
+
+
+    <div class="note-117">
+        <p></p>
+        <span class="note-bold">An Example on the PRODUCT Operation</span>
+        <p>
+            For simplicity we take two tables with one column each and perform the PRODUCT Operation on them.
+        </p>
+
+        <table style="width: 100%; text-align: left;">
+            <caption style="text-align: left; font-weight: bold;"> TABLE_1 </caption>
+            <tr>
+                <th>T1_COLUMN1</th>
+            </tr>
+            <tr>
+                <td>A</td>
+            </tr>
+            <tr>
+                <td>B</td>
+            </tr>
+            <tr>
+                <td>C</td>
+            </tr>
+
+        </table>
+        <p>TABLE_1 has 1 Column and 3 Rows.</p>
+
+        <table style="width: 100%; text-align: left;">
+            <caption style="text-align: left; font-weight: bold;">TABLE_2</caption>
+            <tr>
+                <th>T2_COLUMN1</th>
+            </tr>
+
+            <tr>
+                <td>10</td>
+            </tr>
+            <tr>
+                <td>20</td>
+            </tr>
+        </table>
+        <p>TABLE_2 has 1 Column and 2 Rows.</p>
+
+
+
+    </div>
+    <p></p>
+
+    <div class="note-117">
+        <p>
+            <span class="note-bold">What will the Result of the PRODUCT Operation be?</span>
+        </p>
+        <img style="max-width: 100%; height: auto;" src="../images/c6/product_01.jpg" alt="Product Resulting Table">
+
+    </div>
+    <p></p>
+
+    <div class="note-117">
+        <p>If we call the Resulting Table of this <span class="note-bold">PRODUCT</span>
+            Operation, TABLE_G, then the operation can be denoted by:
+
+        <div class="note-117-a30">
+            <span class="note-bold">TABLE_G</span> =
+            TABLE_1 <span class="note-bold">PRODUCT</span>
+            TABLE_2
+        </div>
+
+        <p></p>
+        <table style="width: 100%; text-align: left;">
+            <caption style="text-align: left; font-weight: bold;">
+                TABLE_G
+            </caption>
+            <tr>
+                <th>T1_COLUMN1</th>
+                <th>T2_COLUMN1</th>
+            </tr>
+            <tr>
+                <td>A</td>
+                <td>10</td>
+            </tr>
+            <tr>
+                <td>A</td>
+                <td>20</td>
+            </tr>
+            <tr>
+                <td>B</td>
+                <td>10</td>
+            </tr>
+            <tr>
+                <td>B</td>
+                <td>20</td>
+            </tr>
+            <tr>
+                <td>C</td>
+                <td>10</td>
+            </tr>
+            <tr>
+                <td>C</td>
+                <td>20</td>
+            </tr>
+
+
+        </table>
+
+        <p>The Resulting Table of the <span class="note-bold">PRODUCT Operation</span>
+            on TABLE_1 and TABLE_2, which is
+            TABLE_G, has 6 Rows and 2 Columns.</p>
+
+    </div>
+    <p></p>
+
+    <div class="note-95">
+        <p> <span class="note-bold">Another Example on the PRODUCT Operation</span></p>
+
+        <p>
+            Now, let us take the
+            <span class="note-bold">STAFF</span> and the
+            <span class="note-bold">DEPARTMENTS</span> tables, and perform the
+            <span class="note-bold">PRODUCT</span> operation on these two tables.
+        </p>
+
+        <p>
+            <span class="note-bold">STAFF</span> table has 5 rows and 4 columns:
+        </p>
+        <table style="width: 100%; text-align: left;">
+            <caption style="text-align: left; font-weight: bold;">STAFF</caption>
+            <tr>
+                <th>staff id</th>
+                <th>name</th>
+                <th>dg id</th>
+                <th>program no</th>
+            </tr>
+
+            <tr>
+                <td>802</td>
+                <td>YILDIZ</td>
+                <td>400</td>
+                <td>10</td>
+            </tr>
+            <tr>
+                <td>804</td>
+                <td>HEYNEN</td>
+                <td>400</td>
+                <td>20</td>
+            </tr>
+            <tr>
+                <td>806</td>
+                <td>KANUITH</td>
+                <td>400</td>
+                <td>30</td>
+            </tr>
+            <tr>
+                <td>808</td>
+                <td>ZABOROWSKI</td>
+                <td>400</td>
+                <td>40</td>
+            </tr>
+            <tr>
+                <td>1020</td>
+                <td>OTTOVA</td>
+                <td>400</td>
+                <td>60</td>
+            </tr>
+        </table>
+
+
+        <p>
+            <span class="note-bold">DEPARTMENTS</span> table has 3 rows and 2 columns:
+        </p>
+
+        <table style="width: 100%; text-align: left;">
+            <caption style="text-align: left; font-weight: bold;"> DEPARTMENTS </caption>
+
+            <tr>
+                <th>dg id</th>
+                <th>dg name</th>
+            </tr>
+            <tr>
+                <td>200</td>
+                <td>DG Communications</td>
+            </tr>
+            <tr>
+                <td>400</td>
+                <td>DG Innovation and Research</td>
+            </tr>
+            <tr>
+                <td>600</td>
+                <td>DG Legal Service</td>
+            </tr>
+        </table>
+
+        <p> <span class="note-bold">Cartesian Product</span>
+            of these two tables,
+            will produce a
+            <span class="note-bold">Result Table</span> with
+            <span class="note-bold">5x3=15 Rows</span>, and
+            <span class="note-bold">4+2=6 Columns</span>
+            as seen below:
+        </p>
+        <p></p>
+
+        <div class="note-95-a30">
+            <span class="note-bold">TABLE_R = STAFF PRODUCT DEPARTMENTS</span>
+        </div>
+
+        <table style="width: 100%; text-align: left; font-size: x-small;">
+            <caption style="text-align: left; font-weight: bold;">TABLE_R</caption>
+            <tr>
+                <th>staff id</th>
+                <th>name</th>
+                <th>dg id</th>
+                <th>program no</th>
+                <th>dg id</th>
+                <th>dg name</th>
+            </tr>
+
+            <tr>
+                <td>802</td>
+                <td>YILDIZ</td>
+                <td>400</td>
+                <td>10</td>
+                <td>200</td>
+                <td>DG Communications</td>
+            </tr>
+            <tr>
+                <td>802</td>
+                <td>YILDIZ</td>
+                <td>400</td>
+                <td>10</td>
+                <td>400</td>
+                <td>DG Innovation and Research</td>
+            </tr>
+            <tr>
+                <td>802</td>
+                <td>YILDIZ</td>
+                <td>400</td>
+                <td>10</td>
+                <td>600</td>
+                <td>DG Legal Service</td>
+            </tr>
+            <tr>
+                <td>804</td>
+                <td>HEYNEN</td>
+                <td>400</td>
+                <td>20</td>
+                <td>200</td>
+                <td>DG Communications</td>
+            </tr>
+            <tr>
+                <td>804</td>
+                <td>HEYNEN</td>
+                <td>400</td>
+                <td>20</td>
+                <td>400</td>
+                <td>DG Innovation and Research</td>
+            </tr>
+            <tr>
+                <td>804</td>
+                <td>HEYNEN</td>
+                <td>400</td>
+                <td>20</td>
+                <td>600</td>
+                <td>DG Legal Service</td>
+            </tr>
+            <tr>
+                <td>806</td>
+                <td>KANUITH</td>
+                <td>400</td>
+                <td>30</td>
+                <td>200</td>
+                <td>DG Communications</td>
+            </tr>
+            <tr>
+                <td>806</td>
+                <td>KANUITH</td>
+                <td>400</td>
+                <td>30</td>
+                <td>400</td>
+                <td>DG Innovation and Research</td>
+            </tr>
+            <tr>
+                <td>806</td>
+                <td>KANUITH</td>
+                <td>400</td>
+                <td>30</td>
+                <td>600</td>
+                <td>DG Legal Service</td>
+            </tr>
+            <tr>
+                <td>808</td>
+                <td>ZABOROWSKI</td>
+                <td>400</td>
+                <td>40</td>
+                <td>200</td>
+                <td>DG Communications</td>
+            </tr>
+            <tr>
+                <td>808</td>
+                <td>ZABOROWSKI</td>
+                <td>400</td>
+                <td>40</td>
+                <td>400</td>
+                <td>DG Innovation and Research</td>
+            </tr>
+            <tr>
+                <td>808</td>
+                <td>ZABOROWSKI</td>
+                <td>400</td>
+                <td>40</td>
+                <td>600</td>
+                <td>DG Legal Service</td>
+            </tr>
+            <tr>
+                <td>1020</td>
+                <td>OTTOVA</td>
+                <td>400</td>
+                <td>60</td>
+                <td>200</td>
+                <td>DG Communications</td>
+            </tr>
+            <tr>
+                <td>1020</td>
+                <td>OTTOVA</td>
+                <td>400</td>
+                <td>60</td>
+                <td>400</td>
+                <td>DG Innovation and Research</td>
+            </tr>
+            <tr>
+                <td>1020</td>
+                <td>OTTOVA</td>
+                <td>400</td>
+                <td>60</td>
+                <td>600</td>
+                <td>DG Legal Service</td>
+            </tr>
+        </table>
+
+
+
+    </div>
+    <p></p>
+    <span class="note-bold"></span>
+    <span class="note-bold"></span>
+
+
+    <h3 id="cartes_use">Uses of Cartesian Product</h3>
+
+    <div class="note-95">
+        <p>We have already seen the <b>Definition of a Cartesian Product</b>:</p>
+        <ul>
+            <li>In a SELECT Statement with two tables,
+                when a Join Condition is omitted, when there is
+                NO Join Condition, or when the Join Condition is Invalid,
+                the query returns all combination of rows.</li>
+            <li> All rows in the first table are joined to
+                all rows in the second table.</li>
+        </ul>
+    
+        
+        <p></p>
+    </div>
+    <p></p>
+    <div class="note-97">
+        <p>Cartesian Product will generate a large number of rows.</p>
+        <p>If a Cartesian Product is formed because of an Invalid Join Condition,
+            or because a Join Condition was omitted by mistake,
+            then it has to be corrected.
+        </p>
+        <p>However, a Cartesian Product of Tables <b>can be very useful</b>.</p>
+        <p>I always used it myself on several occasions, when I needed test data.</p>
+        <p>Although the data created by the Cartesian Product can be 
+            meaningless, the fact that we have a large sum of rows and columns 
+           makes the Result Set <b>very useful</b> for tests with different purposes.
+        </p>
+        <p></p>
+        <p></p>
+    </div>
+    <p></p>
+
+
+    <h3 id="cartes_ex">Example on Cartesian Product</h3>
+    <div class="note-95">
+        <p>We will use the <b>COMMITTEES</b> table and the 
+        <b>MEPS</b> table in our <b>Cartesian Product</b> 
+    example. </p>
+        <p>In this example, there is <b>NO JOIN Condition</b>
+            between the two tables.
+        </p>
+        <p>Therefore a <b>Cartesian Product</b> is produced when we use this 
+        SELECT Statement:</p>
+        <div class="note-95">
+<pre style="font-size: x-large; font-weight: bold;">
+SELECT  *
+FROM COMMITTEES COMM
+JOIN MEPS M
+ON (1=1)
+</pre>  
+</div>      
+        <p>All rows in the <b>COMMITTEES</b> table are joined to
+            all rows in the <b>MEPS</b> table.</p>
+            <ul>
+                <li><b>COMMITTEES</b> table has 23 rows.</li>
+                <li><b>MEPS</b> table has 787 rows.</li>
+                <li>The <b>Result Set</b> of the SELECT Statement has (23*787) = 18101 rows. </li>
+            </ul>
+        <p></p>
+        <p>Also, all columns in the <b>COMMITTEES</b> table and 
+            all columns in the <b>MEPS</b> table, are included as the columns of the 
+            <b>Result Set</b>.</p>
+        <p></p>
+    </div>
+    <p></p>
+    <div class="note-95">
+        <p>
+        </p>
+        <p>We can see the SELECT Statements used and the output below.</p>
+    </div>
+    <p></p>
+
+    <p></p>
+
+    <div class="note-charcoal-a30-large">
+        <pre>
+SELECT COUNT(*)
+FROM COMMITTEES COMM
+--23
+
+SELECT COUNT(*)
+FROM MEPS M
+-- 787
+
+SELECT 23*787 FROM DUAL
+-- 18101
+
+SELECT  COUNT(*)
+FROM COMMITTEES COMM
+JOIN MEPS M
+ON (1=1)
+--18101
+
+SELECT  *
+FROM COMMITTEES COMM
+JOIN MEPS M
+ON (1=1)   
+                </pre>
+        <p></p>
+    </div>
+    <p><img src="../images/c6/cartes_01.jpg" style="max-width:100% ;" height="auto" alt="Cartesian Product"></p>
+    <p><img src="../images/c6/cartes_02.jpg" style="max-width:100% ;" height="auto" alt="Cartesian Product"></p>
+
+
+
+
+    <h3 id="cartes_cross">The CROSS JOIN Clause</h3>
+
+    <div class="note-97">
+        <p>The <b>CROSS JOIN Clause</b> produces a cross-product of the two tables,
+            which is also a <b></b> <b>Cartesian Product</b>.</p>
+        <p>Below, we can see the same example as in the <b>Cartesian Product</b> Example,
+            only using the <b>CROSS JOIN Clause</b> this time.
+          </p>
+    </div>
+    <p></p>
+
+    <div class="note-charcoal-a30-large">
+        <pre>
+SELECT  COUNT(*)
+FROM COMMITTEES COMM
+CROSS JOIN MEPS M
+--18101
+
+SELECT  M.*, COMM.*
+FROM COMMITTEES COMM
+CROSS JOIN MEPS M   
+                </pre>
+        <p></p>
+    </div>
+    <p><img src="../images/c6/cross_join_01.jpg" style="max-width:100% ;" height="auto" alt="Cross Join"></p>
+    <p><img src="../images/c6/cross_join_02.jpg" style="max-width:100% ;" height="auto" alt="Cross Join"></p>
+
+
+    <p></p>
+
+    <div class="note-97">
+        <p>This resumes the Chapter Multi Table Joins. </p>
+        <img src="../images/c6/garden-9984.jpg" style="max-width:100% ;" height="auto" alt="Breath of Fresh Air">
+
+        <p> </p>
+
+    </div>
+    <p></p>
+
+    <!--  -->
+    <!-- my comments -->
+    <h2 id="references">References</h2>
+
+
+
+    <div class="note-charcoal-a30">
+
+        <ul>
+
+            <li>Oracle&#174; Database, Database Concepts, 21c, F31733-04, August 2021</li>
+            <li>Oracle&#174; Database, 2 Day Developer's Guide, 21c, F32609-01, December 2020 </li>
+            <li>Oracle&#174; Database, SQL Language Reference, 23c F47038-03, June 2023</li>
+            <li>Oracle&#174; Database, SQL Language Reference, 21c F31301-07, March 2022</li>
+            <li>Oracle&#174; Database, Database Reference, 21c, F31274-15, August 2022</li>
+            <li>Oracle&#174; Database, Object-Relational Developer's Guide, 21c, F32263-01, December 2020</li>
+            <li>C.J. Date, An Introduction to Database Systems 7th Edition, Addison-Wesley ISBN 0-201-38590-2</li>
+            <li>Richard Barker, Case*Method, Entity Relationship Modelling, Addison-Wesley ISBN 0-201-41696-4</li>
+            <li>https://docs.oracle.com/en/database/oracle/oracle-database/23/data-warehousing.html</li>
+        </ul>
+    </div>
+
+    <div class="note-117">
+
+
+
+        <ul>
+            <li>ISBN 92-79-03653-X , How the European Union works: Booklet by EU Publications Office
+            </li>
+            <li>ISBN 978-92-824-2203-8, Information handbook of the Council of the European Union, DG Press, General
+                Secretariat of the Council</li>
+
+            <li>European Union
+                <p><a href="https://europa.eu/european-union/index_en" target="_blank">
+                        https://europa.eu/european-union/index_en</a> </p>
+
+            </li>
+
+            <li>European Council
+                <p><a href="https://www.consilium.europa.eu/en/" target="_blank">
+                        https://www.consilium.europa.eu/en/</a>
+                </p>
+            </li>
+            <li>European Parliament
+                <p> <a href="https://www.europarl.europa.eu/portal/en" target="_blank">
+                        https://www.europarl.europa.eu/portal/en</a> </p>
+
+            </li>
+            <li>The Official Directory of the European Union (Who is Who)
+                <p><a href="  https://op.europa.eu/en/web/who-is-who" target="_blank">
+                        https://op.europa.eu/en/web/who-is-who </a> </p>
+            </li>
+        </ul>
+    </div>
+    <p></p>
+    <img src="../images/c6/deu.png" style="max-width:100% ;" height="auto" alt="just me">
+    <p></p>
+</body>
+
+</html>
